@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>iOS面试题 | Vanch&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS面试题">
+<meta property="og:url" content="https://vanchchen.github.io/2018/09/14/iOS面试题/index.html">
+<meta property="og:site_name" content="Vanch&#39;s Blog">
+<meta property="og:description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-14T09:42:46.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS面试题">
+<meta name="twitter:description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
+    
+        <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Vanch</h5>
+          <a href="mailto:447389831@qq.com" title="447389831@qq.com" class="mail">447389831@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/VanchChen" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">iOS面试题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">iOS面试题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-14T09:40:01.000Z" itemprop="datePublished" class="page-time">
+  2018-09-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS基础题"><span class="post-toc-number">1.</span> <span class="post-toc-text">iOS基础题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS-实战题"><span class="post-toc-number">2.</span> <span class="post-toc-text">iOS 实战题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络题"><span class="post-toc-number">3.</span> <span class="post-toc-text">网络题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机系统题"><span class="post-toc-number">4.</span> <span class="post-toc-text">计算机系统题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设计模式题"><span class="post-toc-number">5.</span> <span class="post-toc-text">设计模式题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#架构-amp-设计题"><span class="post-toc-number">6.</span> <span class="post-toc-text">架构 & 设计题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据结构-amp-算法题"><span class="post-toc-number">7.</span> <span class="post-toc-text">数据结构&算法题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引用"><span class="post-toc-number">8.</span> <span class="post-toc-text">引用</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-iOS面试题"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">iOS面试题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-14 17:40:01" datetime="2018-09-14T09:40:01.000Z"  itemprop="datePublished">2018-09-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="iOS基础题"><a href="#iOS基础题" class="headerlink" title="iOS基础题"></a>iOS基础题</h2><ol>
+<li>分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？</li>
+<li>讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？</li>
+<li>被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？</li>
+<li>关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？</li>
+<li>KVO的底层实现？如何取消系统默认的KVO并手动触发（给KVO的触发设定条件：改变的值符合某个条件时再触发KVO）？</li>
+<li><code>Autoreleasepool</code>所使用的数据结构是什么？<code>AutoreleasePoolPage</code>结构体了解么？</li>
+<li>讲一下对象，类对象，元类，跟元类结构体的组成以及他们是如何相关联的？为什么对象方法没有保存的对象结构体里，而是保存在类对象的结构体里？</li>
+<li><code>class_ro_t</code> 和  <code>class_rw_t</code> 的区别？</li>
+<li>iOS 中内省的几个方法？<code>class</code>方法和<code>objc_getClass</code>方法有什么区别?</li>
+<li>在运行时创建类的方法<code>objc_allocateClassPair</code>的方法名尾部为什么是pair（成对的意思）？</li>
+<li>一个int变量被<code>__block</code>修饰与否的区别？<br>\12. 为什么在block外部使用<code>__weak</code>修饰的同时需要在内部使用<code>__strong</code>修饰？</li>
+<li>RunLoop的作用是什么？它的内部工作机制了解么？（最好结合线程和内存管理来说）</li>
+<li>哪些场景可以触发离屏渲染？（知道多少说多少）</li>
+</ol>
+<hr>
+<h2 id="iOS-实战题"><a href="#iOS-实战题" class="headerlink" title="iOS 实战题"></a>iOS 实战题</h2><ol>
+<li>AppDelegate如何瘦身？</li>
+<li>反射是什么？可以举出几个应用场景么？（知道多少说多少）</li>
+<li>有哪些场景是NSOperation比GCD更容易实现的？（或是NSOperation优于GCD的几点，知道多少说多少）</li>
+<li>App 启动优化策略？最好结合启动流程来说（main()函数的执行前后都分别说一下，知道多少说多少）</li>
+<li>App 无痕埋点的思路了解么？你认为理想的无痕埋点系统应该具备哪些特点？（知道多少说多少）</li>
+<li>你知道有哪些情况会导致app崩溃，分别可以用什么方法拦截并化解？（知道多少说多少）</li>
+<li>你知道有哪些情况会导致app卡顿，分别可以用什么方法来避免？（知道多少说多少）</li>
+</ol>
+<hr>
+<h2 id="网络题"><a href="#网络题" class="headerlink" title="网络题"></a>网络题</h2><ol>
+<li>App 网络层有哪些优化策略？</li>
+<li>TCP为什么要三次握手，四次挥手？</li>
+<li>对称加密和非对称加密的区别？分别有哪些算法的实现？</li>
+<li>HTTPS的握手流程？为什么密钥的传递需要使用非对称加密？双向认证了解么？</li>
+<li>HTTPS是如何实现验证身份和验证完整性的？</li>
+<li>如何用Charles抓HTTPS的包？其中原理和流程是什么？</li>
+<li>什么是中间人攻击？如何避免？</li>
+</ol>
+<hr>
+<h2 id="计算机系统题"><a href="#计算机系统题" class="headerlink" title="计算机系统题"></a>计算机系统题</h2><ol>
+<li>了解编译的过程么？分为哪几个步骤？</li>
+<li>静态链接了解么？静态库和动态库的区别？</li>
+<li>内存的几大区域，各自的职能分别是什么？</li>
+<li>static和const有什么区别？</li>
+<li>了解内联函数么？</li>
+<li>什么时候会出现死锁？如何避免？</li>
+<li>说一说你对线程安全的理解？</li>
+<li>列举你知道的线程同步策略？</li>
+<li>有哪几种锁？各自的原理？它们之间的区别是什么？最好可以结合使用场景来说</li>
+</ol>
+<hr>
+<h2 id="设计模式题"><a href="#设计模式题" class="headerlink" title="设计模式题"></a>设计模式题</h2><ol>
+<li>除了单例，观察者设计模式以外，还知道哪些设计模式？分别介绍一下</li>
+<li>最喜欢哪个设计模式？为什么？</li>
+<li>iOS SDK 里面有哪些设计模式的实践？</li>
+<li>**设计模式是为了解决什么问题的？</li>
+<li>**设计模式的成员构成以及工作机制是什么？</li>
+<li>**设计模式的优缺点是什么？</li>
+</ol>
+<hr>
+<h2 id="架构-amp-设计题"><a href="#架构-amp-设计题" class="headerlink" title="架构 &amp; 设计题"></a>架构 &amp; 设计题</h2><ol>
+<li>MVC和MVVM的区别？MVVM和MVP的区别？</li>
+<li>面向对象的几个设计原则了解么？最好可以结合场景来说。</li>
+<li>可以说几个重构的技巧么？你觉得重构适合什么时候来做？</li>
+<li>你觉得框架和设计模式的区别是什么？</li>
+<li>看过哪些第三方框架的源码，它们是怎么设计的？设计好的地方在哪里，不好的地方在哪里，如何改进？（这道题的后三个问题的难度已经很高了，如果不是太N的公司不建议深究）</li>
+</ol>
+<hr>
+<h2 id="数据结构-amp-算法题"><a href="#数据结构-amp-算法题" class="headerlink" title="数据结构&amp;算法题"></a>数据结构&amp;算法题</h2><ol>
+<li>链表和数组的区别是什么？插入和查询的时间复杂度分别是多少？</li>
+<li>哈希表是如何实现的？如何解决地址冲突？</li>
+<li>排序题：冒泡排序，选择排序，插入排序，快速排序（二路，三路）能写出那些？</li>
+<li>链表题：如何检测链表中是否有环？如何删除链表中等于某个值的所有节点？</li>
+<li>数组题：如何在有序数组中找出和等于给定值的两个元素？如何合并两个有序的数组之后保持有序？</li>
+<li>二叉树题：如何反转二叉树？如何验证两个二叉树是完全相等的？</li>
+</ol>
+<hr>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://mp.weixin.qq.com/s/-cefmEo7RcZ5wifXX8JB5g" target="_blank" rel="external">出一套 iOS 高级面试题</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-09-14T09:42:46.884Z" itemprop="dateUpdated">2018-09-14 17:42:46</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/09/14/iOS面试题/" target="_blank" rel="external">https://vanchchen.github.io/2018/09/14/iOS面试题/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://vanchchen.github.io">
+            <img src="/img/avatar.jpg" alt="Vanch">
+            Vanch
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/14/iOS面试题/&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Vanch &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/14/iOS面试题/&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3aQY7DIBBEUd//0p5tJMvwq8EjAZ9VNMkQnhcdqOa68Lgfo/3u72eer8kM1xdDhgwZyzLu5nguJZ2zvVDO7lBlyJBxAONtKfwzvDQTWPq9MmTIkMGnJoM8CBkyZMioMXgBJeVYhgwZMlIGOcTOitvSBzH5LC5DhowFGTw++//Xn/Q3ZMiQsRTjDsesg2vaAOjMLEOGjK0ZIy3M4HgZztA+9L7OIEOGjE0ZtWLKozQesZFvlCFDxpmMWqTFl8vjtvR/i1tDGTJkLMtIL2y1/z5euCfngjJkyNiIkbYq+UOpFd+0ySpDhoy9GbXyOnKlrPZu5/HJkCHjAMascslbkulD6axThgwZWzPSIGwck84TXB2TIUPGAQwe0M/a8NWOwTJkyDiNwQ+QaayfBnO1tqgMGTJOY9Ti/trmkjQ+gxXKkCFjUwY/OvK24hcXPjobRBkyZBzAICUv/TJeXidck5UhQ8bWDBK6pYdM3gCo/W/xdpsMGTIWZ4xHaekGMS3l6CdBhgwZBzB4ZEbiM7IdHMG8FlwZMmRsykhLYRrcF29/gPPpUEWXIUPGIow7HLxAp4z02tnFfxNkyJCxOGOkzKWRHC+ytahOhgwZezPSYyqP+NNWQS28kyFDxjmMuTF9Grfx5XZamDJkyJCBI34ez41cShsquDJkyDiAkS6UNzjJllGGDBlnMtLrFPzYSUjpKXVC3CZDhoylGLUsi4T7vASngGJTU4YMGesx/gBoxm+FMZNkGAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
