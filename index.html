@@ -170,7 +170,7 @@
 
     
         什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。
-12345678//定义在runtime.h中struct objc_category &#123;    char * category_name;    char * class_na...
+123456789struct category_t &#123;    const char *name;    classref_t cls;    struct method_lis...
     
 
         <a href="/2018/09/17/Category探索/" class="post-more waves-effect waves-button">

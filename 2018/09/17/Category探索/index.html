@@ -21,17 +21,17 @@
     
     
     <meta name="keywords" content="">
-    <meta name="description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+    <meta name="description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 123456789struct category_t &amp;#123;    const char *name;    classref_t cls;    struct method_list_t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Category探索">
 <meta property="og:url" content="https://vanchchen.github.io/2018/09/17/Category探索/index.html">
 <meta property="og:site_name" content="Vanch&#39;s Blog">
-<meta property="og:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+<meta property="og:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 123456789struct category_t &amp;#123;    const char *name;    classref_t cls;    struct method_list_t">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-17T07:30:27.569Z">
+<meta property="og:updated_time" content="2018-09-17T07:43:14.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Category探索">
-<meta name="twitter:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+<meta name="twitter:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 123456789struct category_t &amp;#123;    const char *name;    classref_t cls;    struct method_list_t">
     
         <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
     
@@ -175,14 +175,15 @@
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="什么是Category"><a href="#什么是Category" class="headerlink" title="什么是Category?"></a>什么是Category?</h2><p>Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义在runtime.h中</span></div><div class="line"><span class="keyword">struct</span> objc_category &#123;</div><div class="line">    <span class="keyword">char</span> * category_name;</div><div class="line">    <span class="keyword">char</span> * class_name;</div><div class="line">    <span class="keyword">struct</span> objc_method_list * instance_methods;</div><div class="line">    <span class="keyword">struct</span> objc_method_list * class_methods ;</div><div class="line">    <span class="keyword">struct</span> objc_protocol_list * protocols;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>从结构能看出分类可以扩展实例方法列表、类方法列表、协议列表，但是不支持扩展属性。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> category_t &#123;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</div><div class="line">    classref_t cls;</div><div class="line">    <span class="keyword">struct</span> method_list_t *instanceMethods;</div><div class="line">    <span class="keyword">struct</span> method_list_t *classMethods;</div><div class="line">    <span class="keyword">struct</span> protocol_list_t *protocols;</div><div class="line">    <span class="keyword">struct</span> property_list_t *instanceProperties;</div><div class="line">    <span class="keyword">struct</span> property_list_t *_classProperties;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从结构能看出分类可以扩展实例方法列表、类方法列表、协议列表，也支持扩展属性，但不支持扩展成员变量（之后会说）。</p>
 <p>一般使用的场景有扩展现有类方法、代码分区、添加私有方法（不对外暴露category.h）、模拟多继承（使用关联对象的方式添加属性实现）</p>
 <hr>
 <h2 id="什么是Extension？"><a href="#什么是Extension？" class="headerlink" title="什么是Extension？"></a>什么是Extension？</h2><p>Extension一般被称为类扩展、匿名分类，用于定义私有属性和方法，不可被继承。只能依附自定义类写于.m中，定义一般为:</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line"> </div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line"></div><div class="line">@property (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSObject</span> *obj;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<p>类扩展支持写在多个.h文件，但都必须在.m文件中引用，且不能有自己的实现。</p>
 <hr>
-<h2 id="Category与Extension有什么区别？"><a href="#Category与Extension有什么区别？" class="headerlink" title="Category与Extension有什么区别？"></a>Category与Extension有什么区别？</h2><p>1.分类多用于扩展方法实现，类扩展多用于定义私有变量和方法。</p>
+<h2 id="Category与Extension有什么区别？"><a href="#Category与Extension有什么区别？" class="headerlink" title="Category与Extension有什么区别？"></a>Category与Extension有什么区别？</h2><p>1.分类多用于扩展方法实现，类扩展多用于申明私有变量和方法。</p>
 <p>2.类扩展作用在编译期，直接和原类在一起，而分类作用在运行时，加载类的时候动态添加到原类中。</p>
 <p>3.类扩展可以定义属性，分类中定义的属性只会申明setter/getter，并没有相关实现和变量。</p>
 <hr>
@@ -218,7 +219,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-09-17T07:30:27.569Z" itemprop="dateUpdated">2018-09-17 15:30:27</time>
+    最后更新时间：<time datetime="2018-09-17T07:43:14.029Z" itemprop="dateUpdated">2018-09-17 15:43:14</time>
 </span><br>
 
 
