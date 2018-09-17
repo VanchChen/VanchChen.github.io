@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Category探索 | Vanch&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Category探索">
+<meta property="og:url" content="https://vanchchen.github.io/2018/09/17/Category探索/index.html">
+<meta property="og:site_name" content="Vanch&#39;s Blog">
+<meta property="og:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-17T07:30:27.569Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Category探索">
+<meta name="twitter:description" content="什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。 12345678//定义在runtime.h中struct objc_category &amp;#123;    char * category_name;    char * class_name;">
+    
+        <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/images/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Vanch</h5>
+          <a href="mailto:447389831@qq.com" title="447389831@qq.com" class="mail">447389831@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/VanchChen" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Category探索</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Category探索</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-17T07:29:29.000Z" itemprop="datePublished" class="page-time">
+  2018-09-17
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是Category"><span class="post-toc-number">1.</span> <span class="post-toc-text">什么是Category?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是Extension？"><span class="post-toc-number">2.</span> <span class="post-toc-text">什么是Extension？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Category与Extension有什么区别？"><span class="post-toc-number">3.</span> <span class="post-toc-text">Category与Extension有什么区别？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Category如何加载的？"><span class="post-toc-number">4.</span> <span class="post-toc-text">Category如何加载的？</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#那么是怎么运行的呢？"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">那么是怎么运行的呢？</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Category方法覆盖"><span class="post-toc-number">5.</span> <span class="post-toc-text">Category方法覆盖</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#加载Category"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">加载Category</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添加方法属性和协议"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">添加方法属性和协议</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Category实现属性"><span class="post-toc-number">6.</span> <span class="post-toc-text">Category实现属性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类不能添加成员变量"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">分类不能添加成员变量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#关联对象"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">关联对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考"><span class="post-toc-number">7.</span> <span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Category探索"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Category探索</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-17 15:29:29" datetime="2018-09-17T07:29:29.000Z"  itemprop="datePublished">2018-09-17</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="什么是Category"><a href="#什么是Category" class="headerlink" title="什么是Category?"></a>什么是Category?</h2><p>Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//定义在runtime.h中</span></div><div class="line"><span class="keyword">struct</span> objc_category &#123;</div><div class="line">    <span class="keyword">char</span> * category_name;</div><div class="line">    <span class="keyword">char</span> * class_name;</div><div class="line">    <span class="keyword">struct</span> objc_method_list * instance_methods;</div><div class="line">    <span class="keyword">struct</span> objc_method_list * class_methods ;</div><div class="line">    <span class="keyword">struct</span> objc_protocol_list * protocols;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从结构能看出分类可以扩展实例方法列表、类方法列表、协议列表，但是不支持扩展属性。</p>
+<p>一般使用的场景有扩展现有类方法、代码分区、添加私有方法（不对外暴露category.h）、模拟多继承（使用关联对象的方式添加属性实现）</p>
+<hr>
+<h2 id="什么是Extension？"><a href="#什么是Extension？" class="headerlink" title="什么是Extension？"></a>什么是Extension？</h2><p>Extension一般被称为类扩展、匿名分类，用于定义私有属性和方法，不可被继承。只能依附自定义类写于.m中，定义一般为:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line"> </div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="Category与Extension有什么区别？"><a href="#Category与Extension有什么区别？" class="headerlink" title="Category与Extension有什么区别？"></a>Category与Extension有什么区别？</h2><p>1.分类多用于扩展方法实现，类扩展多用于定义私有变量和方法。</p>
+<p>2.类扩展作用在编译期，直接和原类在一起，而分类作用在运行时，加载类的时候动态添加到原类中。</p>
+<p>3.类扩展可以定义属性，分类中定义的属性只会申明setter/getter，并没有相关实现和变量。</p>
+<hr>
+<h2 id="Category如何加载的？"><a href="#Category如何加载的？" class="headerlink" title="Category如何加载的？"></a>Category如何加载的？</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> objc_class : objc_object &#123;</div><div class="line">    Class superclass;</div><div class="line">    class_data_bits_t bits; </div><div class="line">    class_rw_t *data() &#123;</div><div class="line">        <span class="keyword">return</span> bits.data();</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> class_rw_t &#123;</div><div class="line">    <span class="keyword">const</span> class_ro_t *ro;</div><div class="line"></div><div class="line">    method_array_t methods;</div><div class="line">    property_array_t properties;</div><div class="line">    protocol_array_t protocols;</div><div class="line">    ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> class_ro_t &#123;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span> * name;</div><div class="line">    method_list_t * baseMethodList;</div><div class="line">    protocol_list_t * baseProtocols;</div><div class="line">    <span class="keyword">const</span> ivar_list_t * ivars;</div><div class="line">    property_list_t *baseProperties;</div><div class="line">    ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>先简单了解一下Class对象的结构，每个<code>objc_class</code>都包含有<code>class_data_bits_t</code>数据位，其中储存了<code>class_rw_t</code>的指针地址和一些其他标记。<code>class_rw_t</code>中包含有属性方法协议列表，以及<code>class_ro_t</code>指针地址。而在<code>class_ro_t</code>结构中，储存的是编译器决定的属性方法协议。</p>
+<h3 id="那么是怎么运行的呢？"><a href="#那么是怎么运行的呢？" class="headerlink" title="那么是怎么运行的呢？"></a>那么是怎么运行的呢？</h3><p>在编译期类的结构中的<code>class_data_bits_t</code>指向的是一个 <code>class_ro_t</code>指针。</p>
+<p>在运行时调用<code>realizeClass</code>方法，初始化一个<code>class_rw_t</code>结构体，设置ro值为原数据中的<code>class_ro_t</code>后设为数据位中的指向，最后调用<code>methodizeClass</code>方法加载。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> methodizeClass(Class cls)</div><div class="line">&#123;</div><div class="line">    auto rw = cls-&gt;data();</div><div class="line">    auto ro = rw-&gt;ro;</div><div class="line"></div><div class="line">    <span class="comment">// Install methods and properties that the class implements itself.</span></div><div class="line">    method_list_t *list = ro-&gt;baseMethods();</div><div class="line">    <span class="keyword">if</span> (list) &#123;</div><div class="line">        prepareMethodLists(cls, &amp;list, <span class="number">1</span>, <span class="literal">YES</span>, isBundleClass(cls));</div><div class="line">        rw-&gt;methods.attachLists(&amp;list, <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    property_list_t *proplist = ro-&gt;baseProperties;</div><div class="line">    <span class="keyword">if</span> (proplist) &#123;</div><div class="line">        rw-&gt;properties.attachLists(&amp;proplist, <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protocol_list_t *protolist = ro-&gt;baseProtocols;</div><div class="line">    <span class="keyword">if</span> (protolist) &#123;</div><div class="line">        rw-&gt;protocols.attachLists(&amp;protolist, <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Root classes get bonus method implementations if they don't have </span></div><div class="line">    <span class="comment">// them already. These apply before category replacements.</span></div><div class="line">    <span class="keyword">if</span> (cls-&gt;isRootMetaclass()) &#123;</div><div class="line">        <span class="comment">// root metaclass</span></div><div class="line">        addMethod(cls, SEL_initialize, (IMP)&amp;objc_noop_imp, <span class="string">""</span>, <span class="literal">NO</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Attach categories.</span></div><div class="line">    category_list *cats = unattachedCategoriesForClass(cls, <span class="literal">true</span> <span class="comment">/*realizing*/</span>);</div><div class="line">    attachCategories(cls, cats, <span class="literal">false</span> <span class="comment">/*don't flush caches*/</span>);</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (cats) free(cats);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到，在<code>methodizeClass</code>中加载了原先类在编译期决定的方法属性和协议，然后获取了未连接的分类表，将列表中的扩展方法添加到运行期类中。</p>
+<hr>
+<h2 id="Category方法覆盖"><a href="#Category方法覆盖" class="headerlink" title="Category方法覆盖"></a>Category方法覆盖</h2><p>如果不同的分类实现了相同名字的方法，那么调用时会使用最后加入的实现，这是为什么呢？</p>
+<h3 id="加载Category"><a href="#加载Category" class="headerlink" title="加载Category"></a>加载Category</h3><p>dyld链接并初始化二进制文件后，交由<code>ImageLoader</code>读取，接着通知<code>runtime</code>处理，<code>runtime</code>调用<code>map_images</code>解析，然后执行<code>_read_images</code>分析文件中包含的类和分类。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Discover categories. </span></div><div class="line"><span class="keyword">for</span> (EACH_HEADER) &#123;</div><div class="line">    category_t **catlist = </div><div class="line">        _getObjc2CategoryList(hi, &amp;count);</div><div class="line">    <span class="keyword">bool</span> hasClassProperties = hi-&gt;info()-&gt;hasCategoryClassProperties();</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">        category_t *cat = catlist[i];</div><div class="line">        Class cls = remapClass(cat-&gt;cls);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!cls) &#123;</div><div class="line">            <span class="comment">// Category's target class is missing (probably weak-linked).</span></div><div class="line">            <span class="comment">// Disavow any knowledge of this category.</span></div><div class="line">            catlist[i] = <span class="literal">nil</span>;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// Process this category. </span></div><div class="line">        <span class="comment">// First, register the category with its target class. </span></div><div class="line">        <span class="comment">// Then, rebuild the class's method lists (etc) if </span></div><div class="line">        <span class="comment">// the class is realized. </span></div><div class="line">        <span class="keyword">bool</span> classExists = <span class="literal">NO</span>;</div><div class="line">        <span class="keyword">if</span> (cat-&gt;instanceMethods ||  cat-&gt;protocols  </div><div class="line">            ||  cat-&gt;instanceProperties) </div><div class="line">        &#123;</div><div class="line">            addUnattachedCategoryForClass(cat, cls, hi);</div><div class="line">            <span class="keyword">if</span> (cls-&gt;isRealized()) &#123;</div><div class="line">                remethodizeClass(cls);</div><div class="line">                classExists = <span class="literal">YES</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (cat-&gt;classMethods  ||  cat-&gt;protocols  </div><div class="line">            ||  (hasClassProperties &amp;&amp; cat-&gt;_classProperties)) </div><div class="line">        &#123;</div><div class="line">            addUnattachedCategoryForClass(cat, cls-&gt;ISA(), hi);</div><div class="line">            <span class="keyword">if</span> (cls-&gt;ISA()-&gt;isRealized()) &#123;</div><div class="line">                remethodizeClass(cls-&gt;ISA());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="添加方法属性和协议"><a href="#添加方法属性和协议" class="headerlink" title="添加方法属性和协议"></a>添加方法属性和协议</h3><p>如果有新增的分类，就分别添加到原类和meta类，并通过<code>remethodizeClass</code>更新，具体就是调用<code>attachCategories</code>方法把分类中所有的方法都添加到指定类中。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> </div><div class="line">attachCategories(Class cls, category_list *cats, <span class="keyword">bool</span> flush_caches)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (!cats) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">    <span class="keyword">bool</span> isMeta = cls-&gt;isMetaClass();</div><div class="line"></div><div class="line">    <span class="comment">// fixme rearrange to remove these intermediate allocations</span></div><div class="line">    <span class="keyword">method_list_t</span> **mlists = (<span class="keyword">method_list_t</span> **)</div><div class="line">        <span class="built_in">malloc</span>(cats-&gt;count * <span class="keyword">sizeof</span>(*mlists));</div><div class="line">    <span class="keyword">property_list_t</span> **proplists = (<span class="keyword">property_list_t</span> **)</div><div class="line">        <span class="built_in">malloc</span>(cats-&gt;count * <span class="keyword">sizeof</span>(*proplists));</div><div class="line">    <span class="keyword">protocol_list_t</span> **protolists = (<span class="keyword">protocol_list_t</span> **)</div><div class="line">        <span class="built_in">malloc</span>(cats-&gt;count * <span class="keyword">sizeof</span>(*protolists));</div><div class="line"></div><div class="line">    <span class="comment">// Count backwards through cats to get newest categories first</span></div><div class="line">    <span class="keyword">int</span> mcount = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> propcount = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> protocount = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> i = cats-&gt;count;</div><div class="line">    <span class="keyword">bool</span> fromBundle = NO;</div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">        <span class="keyword">auto</span>&amp; entry = cats-&gt;<span class="built_in">list</span>[i];</div><div class="line"></div><div class="line">        <span class="keyword">method_list_t</span> *mlist = entry.cat-&gt;methodsForMeta(isMeta);</div><div class="line">        <span class="keyword">if</span> (mlist) &#123;</div><div class="line">            mlists[mcount++] = mlist;</div><div class="line">            fromBundle |= entry.hi-&gt;isBundle();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">property_list_t</span> *proplist = </div><div class="line">            entry.cat-&gt;propertiesForMeta(isMeta, entry.hi);</div><div class="line">        <span class="keyword">if</span> (proplist) &#123;</div><div class="line">            proplists[propcount++] = proplist;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">protocol_list_t</span> *protolist = entry.cat-&gt;protocols;</div><div class="line">        <span class="keyword">if</span> (protolist) &#123;</div><div class="line">            protolists[protocount++] = protolist;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">auto</span> rw = cls-&gt;data();</div><div class="line"></div><div class="line">    prepareMethodLists(cls, mlists, mcount, NO, fromBundle);</div><div class="line">    rw-&gt;methods.attachLists(mlists, mcount);</div><div class="line">    <span class="built_in">free</span>(mlists);</div><div class="line">    <span class="keyword">if</span> (flush_caches  &amp;&amp;  mcount &gt; <span class="number">0</span>) flushCaches(cls);</div><div class="line"></div><div class="line">    rw-&gt;properties.attachLists(proplists, propcount);</div><div class="line">    <span class="built_in">free</span>(proplists);</div><div class="line"></div><div class="line">    rw-&gt;protocols.attachLists(protolists, protocount);</div><div class="line">    <span class="built_in">free</span>(protolists);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">attachLists</span><span class="params">(List* <span class="keyword">const</span> * addedLists, <span class="keyword">uint32_t</span> addedCount)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (addedCount == <span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (hasArray()) &#123;</div><div class="line">            <span class="comment">// many lists -&gt; many lists</span></div><div class="line">            <span class="keyword">uint32_t</span> oldCount = <span class="built_in">array</span>()-&gt;count;</div><div class="line">            <span class="keyword">uint32_t</span> newCount = oldCount + addedCount;</div><div class="line">            setArray((<span class="keyword">array_t</span> *)<span class="built_in">realloc</span>(<span class="built_in">array</span>(), <span class="keyword">array_t</span>::byteSize(newCount)));</div><div class="line">            <span class="built_in">array</span>()-&gt;count = newCount;</div><div class="line">            memmove(<span class="built_in">array</span>()-&gt;lists + addedCount, <span class="built_in">array</span>()-&gt;lists, </div><div class="line">                    oldCount * <span class="keyword">sizeof</span>(<span class="built_in">array</span>()-&gt;lists[<span class="number">0</span>]));</div><div class="line">            <span class="built_in">memcpy</span>(<span class="built_in">array</span>()-&gt;lists, addedLists, </div><div class="line">                   addedCount * <span class="keyword">sizeof</span>(<span class="built_in">array</span>()-&gt;lists[<span class="number">0</span>]));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (!<span class="built_in">list</span>  &amp;&amp;  addedCount == <span class="number">1</span>) &#123;</div><div class="line">            <span class="comment">// 0 lists -&gt; 1 list</span></div><div class="line">            <span class="built_in">list</span> = addedLists[<span class="number">0</span>];</div><div class="line">        &#125; </div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// 1 list -&gt; many lists</span></div><div class="line">            List* oldList = <span class="built_in">list</span>;</div><div class="line">            <span class="keyword">uint32_t</span> oldCount = oldList ? <span class="number">1</span> : <span class="number">0</span>;</div><div class="line">            <span class="keyword">uint32_t</span> newCount = oldCount + addedCount;</div><div class="line">            setArray((<span class="keyword">array_t</span> *)<span class="built_in">malloc</span>(<span class="keyword">array_t</span>::byteSize(newCount)));</div><div class="line">            <span class="built_in">array</span>()-&gt;count = newCount;</div><div class="line">            <span class="keyword">if</span> (oldList) <span class="built_in">array</span>()-&gt;lists[addedCount] = oldList;</div><div class="line">            <span class="built_in">memcpy</span>(<span class="built_in">array</span>()-&gt;lists, addedLists, </div><div class="line">                   addedCount * <span class="keyword">sizeof</span>(<span class="built_in">array</span>()-&gt;lists[<span class="number">0</span>]));</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>可以看到最后调用了<code>rw-&gt;methods.attachLists(mlists, mcount);</code> 把新增分类中的方法列表添加到实际运行时查询的方法列表头部。</p>
+<p>在进行方法调用时会从头部查询，一旦查到后就返回结果，因此后编译的文件中的方法会被优先调用。</p>
+<p>同时之前添加的方法实现也保存了，可以通过获取同名方法的方式查找原类的实现。</p>
+<hr>
+<h2 id="Category实现属性"><a href="#Category实现属性" class="headerlink" title="Category实现属性"></a>Category实现属性</h2><h3 id="分类不能添加成员变量"><a href="#分类不能添加成员变量" class="headerlink" title="分类不能添加成员变量"></a>分类不能添加成员变量</h3><p>属性（Property）包含了成员变量（Ivar）和Setter&amp;Getter。</p>
+<p>可以在分类中定义属性，但由于分类是在运行时添加分类属性到类的属性列表中，所以并没有创建对应的成员变量和方法实现。</p>
+<h3 id="关联对象"><a href="#关联对象" class="headerlink" title="关联对象"></a>关联对象</h3><p>如果我们想让分类实现添加新的属性，一般都通过关联对象的方式。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 声明文件</span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">TestObject</span> (<span class="title">Category</span>)</span></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSObject</span> *object;</div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="comment">// 实现文件</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> *<span class="keyword">const</span> kAssociatedObjectKey = (<span class="keyword">void</span> *)&amp;kAssociatedObjectKey;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">TestObject</span> (<span class="title">Category</span>)</span></div><div class="line"></div><div class="line">- (<span class="built_in">NSObject</span> *)object &#123;</div><div class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, kAssociatedObjectKey);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setObject:(<span class="built_in">NSObject</span> *)object &#123;</div><div class="line">    objc_setAssociatedObject(<span class="keyword">self</span>, kAssociatedObjectKey, object, OBJC_ASSOCIATION_RETAIN_NONATOMIC);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<p>这种方式可以实现存取对象，但是不能获取<code>_object</code>变量。</p>
+<hr>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://tech.meituan.com/DiveIntoCategory.html" target="_blank" rel="external">深入理解Objective-C：Category</a></p>
+<p><a href="https://halfrost.com/objc_runtime_isa_class/" target="_blank" rel="external">神经病院 Objective-C Runtime 入院第一天—— isa 和 Class</a></p>
+<p><a href="https://www.jianshu.com/p/0dc2513e117b" target="_blank" rel="external">探秘Runtime - 深入剖析Category</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-09-17T07:30:27.569Z" itemprop="dateUpdated">2018-09-17 15:30:27</time>
+</span><br>
+
+
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2018/09/17/Category探索/" target="_blank" rel="external">https://vanchchen.github.io/2018/09/17/Category探索/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://vanchchen.github.io">
+            <img src="/images/avatar.jpg" alt="Vanch">
+            Vanch
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/17/Category探索/&title=《Category探索》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/17/Category探索/&title=《Category探索》 — Vanch's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/17/Category探索/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Category探索》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/17/Category探索/&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/17/Category探索/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/09/14/iOS面试题/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">iOS面试题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Vanch &copy; 2015 - 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/17/Category探索/&title=《Category探索》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/17/Category探索/&title=《Category探索》 — Vanch's Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/17/Category探索/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Category探索》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/17/Category探索/&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/17/Category探索/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3awXLDIAxF0fz/T7ubLtKFyX2IZsbSZeVxHeCwUCXg9cLtemvvb8j3d1/e9bnuudRkyJDxWMa1bHxadz0T3vp5PTcZMmTMYawnQZ7XA9fH+jBnGTJkyABBln9DUkYZMmTIqAdcnlBycKkHGTJkDGCkE+KbZTx9JMXzgVpchgwZD2SkG2fffP6X8w0ZMmQ8inGFjWzukzen5vPbmwwZMloz9rbJ0kSQkPa29mTIkDGBsbdNfzbUVpamdNogQ4aMFoz0+hdZDrKVlh5OyJAhozeDh9G9KZJ+SFn7qqylDBkyGjFOFbQpfn3MGcBkyJDRmrG3TVYZeN0DH1GGDBkTGDzk7QXZNK3kReyfNzJkyBjAOJXqpQGaMz70KUOGjNaMtHA9NTDZdOOpqgwZMnoz+CFiJSlMQzMvg2XIkDGBwT/lYZRPurKdF/z3kCFDxsMZlR/HGWgljK5HkSFDRmsGH36vZCWpZD1Ay5AhYwKDHFWmw/Dgy4P+hyWQIUPGAEaaqMURPUwKeRoqQ4aMaYxKwOWwdNJoVjJkyBjAIGGRl7vpdHmYvv2VDBkymjL2rk2khevelYugHxkyZLRm8MYvW5w6BCXPMUyGDBmPZewF2bT4TEvc9FBBhgwZExhp4ONv6secCClDhgwZ+AIE761yEQ2di8qQIWMwo75JR/4aL4EMGTIGMMgk9jbxeSFaWQgZMmT0ZvDSkQREHlJPHQ/IkCGjNeMHf/vRPxIc7bwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
