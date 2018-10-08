@@ -14,21 +14,22 @@
     
     
     
-    <title>iOS面试题 | Vanch&#39;s Blog</title>
+    <title>iOS面试题 | Vanch&#39;s Blog | 欢迎来到我的世界</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="theme-color" content="#3F51B5">
+    <meta name="theme-color" content="#00BCD4">
     
     
-    <meta name="keywords" content="">
+    <meta name="keywords" content="面试">
     <meta name="description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
+<meta name="keywords" content="面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS面试题">
-<meta property="og:url" content="https://vanchchen.github.io/2018/09/14/iOS面试题/index.html">
+<meta property="og:url" content="https://vanchchen.github.io/p/6ea5.html">
 <meta property="og:site_name" content="Vanch&#39;s Blog">
 <meta property="og:description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-14T09:42:46.884Z">
+<meta property="og:updated_time" content="2018-10-08T01:55:15.824Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS面试题">
 <meta name="twitter:description" content="iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？ 关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？ KVO的底层实现">
@@ -36,7 +37,7 @@
         <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
     
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -74,9 +75,9 @@
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-                所有
+              <a href="/categories/iOS/"  >
+                <i class="icon icon-lg icon-apple"></i>
+                iOS
               </a>
             </li>
         
@@ -88,9 +89,30 @@
             </li>
         
             <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
               <a href="https://github.com/VanchChen" target="_blank" >
                 <i class="icon icon-lg icon-github"></i>
                 Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.cnblogs.com/vanch/" target="_blank" >
+                <i class="icon icon-lg icon-rss"></i>
+                博客园
               </a>
             </li>
         
@@ -135,7 +157,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
 
             
         </h5>
@@ -152,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS基础题"><span class="post-toc-number">1.</span> <span class="post-toc-text">iOS基础题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS-实战题"><span class="post-toc-number">2.</span> <span class="post-toc-text">iOS 实战题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络题"><span class="post-toc-number">3.</span> <span class="post-toc-text">网络题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机系统题"><span class="post-toc-number">4.</span> <span class="post-toc-text">计算机系统题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设计模式题"><span class="post-toc-number">5.</span> <span class="post-toc-text">设计模式题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#架构-amp-设计题"><span class="post-toc-number">6.</span> <span class="post-toc-text">架构 & 设计题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据结构-amp-算法题"><span class="post-toc-number">7.</span> <span class="post-toc-text">数据结构&算法题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引用"><span class="post-toc-number">8.</span> <span class="post-toc-text">引用</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS基础题"><span class="post-toc-number">1.</span> <span class="post-toc-text">iOS基础题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#iOS-实战题"><span class="post-toc-number">2.</span> <span class="post-toc-text">iOS 实战题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#网络题"><span class="post-toc-number">3.</span> <span class="post-toc-text">网络题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算机系统题"><span class="post-toc-number">4.</span> <span class="post-toc-text">计算机系统题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设计模式题"><span class="post-toc-number">5.</span> <span class="post-toc-text">设计模式题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#架构-amp-设计题"><span class="post-toc-number">6.</span> <span class="post-toc-text">架构 &amp; 设计题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据结构-amp-算法题"><span class="post-toc-number">7.</span> <span class="post-toc-text">数据结构&amp;算法题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引用"><span class="post-toc-number">8.</span> <span class="post-toc-text">引用</span></a></li></ol>
         </nav>
     </aside>
 
@@ -166,11 +188,15 @@
             <time class="post-time" title="2018-09-14 17:40:01" datetime="2018-09-14T09:40:01.000Z"  itemprop="datePublished">2018-09-14</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/面试/">面试</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
 
 
 
             
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
@@ -248,7 +274,7 @@
 <li>二叉树题：如何反转二叉树？如何验证两个二叉树是完全相等的？</li>
 </ol>
 <hr>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://mp.weixin.qq.com/s/-cefmEo7RcZ5wifXX8JB5g" target="_blank" rel="external">出一套 iOS 高级面试题</a></p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://mp.weixin.qq.com/s/-cefmEo7RcZ5wifXX8JB5g" target="_blank" rel="noopener">出一套 iOS 高级面试题</a></p>
 
         </div>
 
@@ -257,7 +283,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-09-14T09:42:46.884Z" itemprop="dateUpdated">2018-09-14 17:42:46</time>
+    最后更新时间：<time datetime="2018-10-08T01:55:15.824Z" itemprop="dateUpdated">2018-10-08 09:55:15</time>
 </span><br>
 
 
@@ -283,6 +309,8 @@
 
         <div class="post-footer">
             
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面试/">面试</a></li></ul>
+
 
             
 <div class="page-share-wrap">
@@ -291,7 +319,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/6ea5.html&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -301,22 +329,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/6ea5.html&title=《iOS面试题》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/6ea5.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/14/iOS面试题/&via=https://vanchchen.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/p/6ea5.html&via=https://vanchchen.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/6ea5.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -339,7 +367,7 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/2018/09/17/Category探索/" id="post-prev" class="post-nav-link">
+      <a href="/p/5cb0.html" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
         <h4 class="title">Category探索</h4>
       </a>
@@ -363,6 +391,30 @@
 
 
 
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "YfjeluQO2LJ7T9AjqGw6P7QM-gzGzoHsz",
+            appKey: "wrdh0ULPmDxPuPyOYdcLAzdU",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
 
 
 
@@ -381,12 +433,12 @@
     <div class="reward-content">
         
         <div class="reward-code">
-            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+            <img id="rewardCode" src="/images/wechat.jpg" alt="打赏二维码">
         </div>
         
         <label class="reward-toggle">
             <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
-                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+                data-wechat="/images/wechat.jpg" data-alipay="/images/alipay.jpg">
             <div class="reward-toggle-ctrol">
                 <span class="reward-toggle-item wechat">微信</span>
                 <span class="reward-toggle-label"></span>
@@ -404,6 +456,15 @@
         <footer class="footer">
     <div class="top">
         
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        Hola！第<span id="busuanzi_value_site_uv"></span>位客人
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        本站居然被看了<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</p>
+
 
         <p>
             
@@ -413,7 +474,7 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>Vanch &copy; 2015 - 2018</span>
+        <p><span>Vanch &copy; 2018</span>
             <span>
                 
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
@@ -431,7 +492,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/6ea5.html&title=《iOS面试题》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -441,22 +502,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/2018/09/14/iOS面试题/&title=《iOS面试题》 — Vanch's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/6ea5.html&title=《iOS面试题》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/6ea5.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/2018/09/14/iOS面试题/&via=https://vanchchen.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《iOS面试题》 — Vanch's Blog&url=https://vanchchen.github.io/p/6ea5.html&via=https://vanchchen.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/2018/09/14/iOS面试题/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/6ea5.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -467,7 +528,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3aQY7DIBBEUd//0p5tJMvwq8EjAZ9VNMkQnhcdqOa68Lgfo/3u72eer8kM1xdDhgwZyzLu5nguJZ2zvVDO7lBlyJBxAONtKfwzvDQTWPq9MmTIkMGnJoM8CBkyZMioMXgBJeVYhgwZMlIGOcTOitvSBzH5LC5DhowFGTw++//Xn/Q3ZMiQsRTjDsesg2vaAOjMLEOGjK0ZIy3M4HgZztA+9L7OIEOGjE0ZtWLKozQesZFvlCFDxpmMWqTFl8vjtvR/i1tDGTJkLMtIL2y1/z5euCfngjJkyNiIkbYq+UOpFd+0ySpDhoy9GbXyOnKlrPZu5/HJkCHjAMascslbkulD6axThgwZWzPSIGwck84TXB2TIUPGAQwe0M/a8NWOwTJkyDiNwQ+QaayfBnO1tqgMGTJOY9Ti/trmkjQ+gxXKkCFjUwY/OvK24hcXPjobRBkyZBzAICUv/TJeXidck5UhQ8bWDBK6pYdM3gCo/W/xdpsMGTIWZ4xHaekGMS3l6CdBhgwZBzB4ZEbiM7IdHMG8FlwZMmRsykhLYRrcF29/gPPpUEWXIUPGIow7HLxAp4z02tnFfxNkyJCxOGOkzKWRHC+ytahOhgwZezPSYyqP+NNWQS28kyFDxjmMuTF9Grfx5XZamDJkyJCBI34ez41cShsquDJkyDiAkS6UNzjJllGGDBlnMtLrFPzYSUjpKXVC3CZDhoylGLUsi4T7vASngGJTU4YMGesx/gBoxm+FMZNkGAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABw0lEQVR42u3aQY7CMAwFUO5/aUaa1Swm5dtu0wq9rBCg5MHCir/7esXr/btWr/+u4++s9jx54eLijrnvw7Xa+hidEHs74OLi7uQmxSv/GfPvLN/HxcV9GDe5ACUgXFzcb+Lmx+S74eLiPpmbND+9Jifnntyr4eLiDrjzwHT+emu+i4uLO5hKJEXtuOGZnPXP6bi4uFu4yXXk+Mh8aNq79JQ3wsXFHXPzJiSnz1uXDyUMFxf3Ym6vVB2/nw9R8qboQw3GxcW9jFstSZNHrE4ITHFxcS/jTqKNpIHJR7ZR6cTFxd3CrYKqzcmkkJX7JFxc3JO4vWFJ73pUvSTh4uLexU1GHfnFJQ9BqicuYxFcXNzLuJNC0wtE8uKIi4u7n5tDz/0x1SdEcHFxd3LnTUg1MM3DlOWeuLi4F3OrUWbyyMV1QSouLu5Obq8MVUet5akOLi7urdx89VqjXpz6yv8zXFzcU7nVglItPdVHtfJPcXFxr+b2ilcvEs2DElxc3Cdwe2FoLwoZhbC4uLgP41YpSTiSlLnotoWLi3srtxqqNgcnq7NwcXE3cvOtq8ckzVK+Ay4u7h7uJDBN4oxeOIKLi3sT9wdVTPwzdJbXnwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 
@@ -478,9 +539,11 @@
 var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1274985211&web_id=1274985211')
+
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -500,12 +563,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 

@@ -14,22 +14,22 @@
     
     
     
-    <title>初试Shell脚本 | Vanch&#39;s Blog</title>
+    <title>初试Shell脚本 | Vanch&#39;s Blog | 欢迎来到我的世界</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-    <meta name="theme-color" content="#3F51B5">
+    <meta name="theme-color" content="#00BCD4">
     
     
-    <meta name="keywords" content="shell">
+    <meta name="keywords" content="">
     <meta name="description" content="背景临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。 于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。  先上代码1234567891011121314151617">
-<meta name="keywords" content="shell">
+<meta name="keywords" content="iOS,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初试Shell脚本">
-<meta property="og:url" content="https://vanchchen.github.io/杂学/初试Shell脚本/index.html">
+<meta property="og:url" content="https://vanchchen.github.io/p/3f22.html">
 <meta property="og:site_name" content="Vanch&#39;s Blog">
 <meta property="og:description" content="背景临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。 于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。  先上代码1234567891011121314151617">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-20T10:24:35.981Z">
+<meta property="og:updated_time" content="2018-10-08T01:55:15.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初试Shell脚本">
 <meta name="twitter:description" content="背景临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。 于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。  先上代码1234567891011121314151617">
@@ -37,7 +37,7 @@
         <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
     
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -75,9 +75,9 @@
             </li>
         
             <li class="waves-block waves-effect">
-              <a href="/archives"  >
-                <i class="icon icon-lg icon-archives"></i>
-                所有
+              <a href="/categories/iOS/"  >
+                <i class="icon icon-lg icon-apple"></i>
+                iOS
               </a>
             </li>
         
@@ -85,6 +85,20 @@
               <a href="/categories"  >
                 <i class="icon icon-lg icon-th-list"></i>
                 分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于
               </a>
             </li>
         
@@ -97,7 +111,7 @@
         
             <li class="waves-block waves-effect">
               <a href="https://www.cnblogs.com/vanch/" target="_blank" >
-                <i class="icon icon-lg icon-cnblog"></i>
+                <i class="icon icon-lg icon-rss"></i>
                 博客园
               </a>
             </li>
@@ -143,7 +157,7 @@
 </time>
 
 
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂学/">杂学</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Shell/">Shell</a></li></ul>
 
             
         </h5>
@@ -174,18 +188,22 @@
             <time class="post-time" title="2018-09-20 16:45:12" datetime="2018-09-20T08:45:12.000Z"  itemprop="datePublished">2018-09-20</time>
 
             
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂学/">杂学</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Shell/">Shell</a></li></ul>
 
 
 
             
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
 
         </div>
         <div class="post-content" id="post-content" itemprop="postContent">
             <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。</p>
 <p>于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。</p>
 <hr>
-<h2 id="先上代码"><a href="#先上代码" class="headerlink" title="先上代码"></a>先上代码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span>!/usr/bin/env bash</div><div class="line"><span class="meta">#</span> Created By Vanch at 2018/9/20</div><div class="line"></div><div class="line">printHelp() &#123;</div><div class="line">    echo "Uncompess log files from inputed zip"</div><div class="line">    echo "Then Merge these logs to one file"</div><div class="line">    echo "Supported file types: zip tar tar.gz tar.bz2"</div><div class="line">    echo</div><div class="line">    echo "Use -s for filtering socket result to socket.log"</div><div class="line">    echo </div><div class="line">    echo "Have fun!"</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">#</span>如果没输入参数，就打印帮助信息</div><div class="line">if [ $# -eq 0 ]; then</div><div class="line">    printHelp</div><div class="line">    exit 0</div><div class="line">fi</div><div class="line"></div><div class="line"><span class="meta">#</span>把长选项转到短选项</div><div class="line">for arg in "$@"; do</div><div class="line">  shift</div><div class="line">  case "$arg" in</div><div class="line">    "--help")       set -- "$@" "-h" ;;</div><div class="line">    "--version")    set -- "$@" "-v" ;;</div><div class="line">    "--list")       set -- "$@" "-l" ;;</div><div class="line">    *)              set -- "$@" "$arg"</div><div class="line">  esac</div><div class="line">done</div><div class="line"><span class="meta">#</span>获取短选项</div><div class="line">OPTIND=1</div><div class="line">printS=false;</div><div class="line">while getopts "dmksahvl" opt; do</div><div class="line">    case $opt in</div><div class="line">        h) #输入为help，就打印帮助信息</div><div class="line">            printHelp</div><div class="line">            exit 0;;</div><div class="line">        l) #支持单独获取支持文件后缀列表</div><div class="line">            echo "Supported file types: zip tar tar.gz tar.bz2"</div><div class="line">            exit 0;;</div><div class="line">        v) #支持查找版本号</div><div class="line">            echo "1.0.0"</div><div class="line">            exit 0;;</div><div class="line">        s) #过滤Socket</div><div class="line">            printS=true;;</div><div class="line">    esac</div><div class="line">done</div><div class="line"></div><div class="line"><span class="meta">#</span>获得压缩包地址</div><div class="line">file=$&#123;!#&#125;</div><div class="line"><span class="meta">#</span>如果不存在就退出</div><div class="line">if [ ! -f "$file" ]; then</div><div class="line">    echo "File not exist!"</div><div class="line">    exit 0;</div><div class="line">fi </div><div class="line"><span class="meta">#</span>获取压缩后缀</div><div class="line">fileName=`basename $file`</div><div class="line">suffix=$&#123;fileName#*.&#125;</div><div class="line"><span class="meta">#</span>判断文件类型</div><div class="line">support=('tar','tar.gz','tar.bz2','zip')</div><div class="line">if [ -z `echo "$&#123;support[@]&#125;" | grep -w "$suffix"` ] ; then</div><div class="line">    echo "File type not support!"</div><div class="line">    exit 0;    </div><div class="line">fi</div><div class="line"><span class="meta">#</span>拼接文件夹地址</div><div class="line">fileDir=$(dirname $file)/$&#123;fileName%%.*&#125;</div><div class="line">if [ -d $fileDir ]; then</div><div class="line">    rm -rf $fileDir</div><div class="line">fi</div><div class="line">mkdir $fileDir</div><div class="line">cd $fileDir</div><div class="line"><span class="meta">#</span>解压文件</div><div class="line">case $suffix in</div><div class="line">    'tar')</div><div class="line">        eval "tar xvf $file &gt; /dev/null 2&gt;&amp;1";;</div><div class="line">    'tar.gz')</div><div class="line">        eval "tar zxvf $file &gt; /dev/null 2&gt;&amp;1";;</div><div class="line">    'tar.bz2')</div><div class="line">        eval "tar jxvf $file &gt; /dev/null 2&gt;&amp;1";;</div><div class="line">    'zip')</div><div class="line">        eval "unzip -o $file &gt; /dev/null 2&gt;&amp;1";;</div><div class="line">esac</div><div class="line">echo 'Uncompass Success!'</div><div class="line"></div><div class="line"><span class="meta">#</span>获取日志列表，按排序合并到一个日志</div><div class="line">mergeFile=./merge.log</div><div class="line">logCount=0</div><div class="line"><span class="meta">#</span>搜索com开头的日志，按日期排序，用？临时代替空格</div><div class="line">for logName in `ls | grep 'com' | sort -n | tr " " "?"`; do</div><div class="line">    logName=$&#123;logName//'?'/' '&#125;</div><div class="line">    cat ./"$logName" &gt;&gt; $mergeFile</div><div class="line">    ((logCount++))</div><div class="line">done</div><div class="line"><span class="meta">#</span>不存在日志就打断</div><div class="line">if [ $logCount -eq 0 ]; then</div><div class="line">    echo "Log not exist!"</div><div class="line">    exit </div><div class="line">fi</div><div class="line">echo 'Merge Success!'</div><div class="line"><span class="meta">#</span>打印socket</div><div class="line">if [ $printS = true ]; then</div><div class="line">    cat $mergeFile | grep -i 'socket' &gt;&gt; ./socket.log</div><div class="line">    echo 'Filter socket'</div><div class="line">fi</div></pre></td></tr></table></figure>
+<h2 id="先上代码"><a href="#先上代码" class="headerlink" title="先上代码"></a>先上代码</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/usr/bin/env bash</span><br><span class="line"><span class="meta">#</span> Created By Vanch at 2018/9/20</span><br><span class="line"></span><br><span class="line">printHelp() &#123;</span><br><span class="line">    echo "Uncompess log files from inputed zip"</span><br><span class="line">    echo "Then Merge these logs to one file"</span><br><span class="line">    echo "Supported file types: zip tar tar.gz tar.bz2"</span><br><span class="line">    echo</span><br><span class="line">    echo "Use -s for filtering socket result to socket.log"</span><br><span class="line">    echo </span><br><span class="line">    echo "Have fun!"</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>如果没输入参数，就打印帮助信息</span><br><span class="line">if [ $# -eq 0 ]; then</span><br><span class="line">    printHelp</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>把长选项转到短选项</span><br><span class="line">for arg in "$@"; do</span><br><span class="line">  shift</span><br><span class="line">  case "$arg" in</span><br><span class="line">    "--help")       set -- "$@" "-h" ;;</span><br><span class="line">    "--version")    set -- "$@" "-v" ;;</span><br><span class="line">    "--list")       set -- "$@" "-l" ;;</span><br><span class="line">    *)              set -- "$@" "$arg"</span><br><span class="line">  esac</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span>获取短选项</span><br><span class="line">OPTIND=1</span><br><span class="line">printS=false;</span><br><span class="line">while getopts "dmksahvl" opt; do</span><br><span class="line">    case $opt in</span><br><span class="line">        h) #输入为help，就打印帮助信息</span><br><span class="line">            printHelp</span><br><span class="line">            exit 0;;</span><br><span class="line">        l) #支持单独获取支持文件后缀列表</span><br><span class="line">            echo "Supported file types: zip tar tar.gz tar.bz2"</span><br><span class="line">            exit 0;;</span><br><span class="line">        v) #支持查找版本号</span><br><span class="line">            echo "1.0.0"</span><br><span class="line">            exit 0;;</span><br><span class="line">        s) #过滤Socket</span><br><span class="line">            printS=true;;</span><br><span class="line">    esac</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>获得压缩包地址</span><br><span class="line">file=$&#123;!#&#125;</span><br><span class="line"><span class="meta">#</span>如果不存在就退出</span><br><span class="line">if [ ! -f "$file" ]; then</span><br><span class="line">    echo "File not exist!"</span><br><span class="line">    exit 0;</span><br><span class="line">fi </span><br><span class="line"><span class="meta">#</span>获取压缩后缀</span><br><span class="line">fileName=`basename $file`</span><br><span class="line">suffix=$&#123;fileName#*.&#125;</span><br><span class="line"><span class="meta">#</span>判断文件类型</span><br><span class="line">support=('tar','tar.gz','tar.bz2','zip')</span><br><span class="line">if [ -z `echo "$&#123;support[@]&#125;" | grep -w "$suffix"` ] ; then</span><br><span class="line">    echo "File type not support!"</span><br><span class="line">    exit 0;    </span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span>拼接文件夹地址</span><br><span class="line">fileDir=$(dirname $file)/$&#123;fileName%%.*&#125;</span><br><span class="line">if [ -d $fileDir ]; then</span><br><span class="line">    rm -rf $fileDir</span><br><span class="line">fi</span><br><span class="line">mkdir $fileDir</span><br><span class="line">cd $fileDir</span><br><span class="line"><span class="meta">#</span>解压文件</span><br><span class="line">case $suffix in</span><br><span class="line">    'tar')</span><br><span class="line">        eval "tar xvf $file &gt; /dev/null 2&gt;&amp;1";;</span><br><span class="line">    'tar.gz')</span><br><span class="line">        eval "tar zxvf $file &gt; /dev/null 2&gt;&amp;1";;</span><br><span class="line">    'tar.bz2')</span><br><span class="line">        eval "tar jxvf $file &gt; /dev/null 2&gt;&amp;1";;</span><br><span class="line">    'zip')</span><br><span class="line">        eval "unzip -o $file &gt; /dev/null 2&gt;&amp;1";;</span><br><span class="line">esac</span><br><span class="line">echo 'Uncompass Success!'</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>获取日志列表，按排序合并到一个日志</span><br><span class="line">mergeFile=./merge.log</span><br><span class="line">logCount=0</span><br><span class="line"><span class="meta">#</span>搜索com开头的日志，按日期排序，用？临时代替空格</span><br><span class="line">for logName in `ls | grep 'com' | sort -n | tr " " "?"`; do</span><br><span class="line">    logName=$&#123;logName//'?'/' '&#125;</span><br><span class="line">    cat ./"$logName" &gt;&gt; $mergeFile</span><br><span class="line">    ((logCount++))</span><br><span class="line">done</span><br><span class="line"><span class="meta">#</span>不存在日志就打断</span><br><span class="line">if [ $logCount -eq 0 ]; then</span><br><span class="line">    echo "Log not exist!"</span><br><span class="line">    exit </span><br><span class="line">fi</span><br><span class="line">echo 'Merge Success!'</span><br><span class="line"><span class="meta">#</span>打印socket</span><br><span class="line">if [ $printS = true ]; then</span><br><span class="line">    cat $mergeFile | grep -i 'socket' &gt;&gt; ./socket.log</span><br><span class="line">    echo 'Filter socket'</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 <hr>
 <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>查询了很多资料后写完了这个脚本，基本满足了我的需求，下面总结一下怎么解决遇到的问题。</p>
 <h3 id="使用环境"><a href="#使用环境" class="headerlink" title="使用环境"></a>使用环境</h3><p>一开始学脚本时，书上都说<code>#! /bin/bash</code>，但是看项目中大神写的脚本，都是<code>#!/usr/bin/env bash</code>，有什么区别呢？</p>
@@ -218,7 +236,7 @@
 <hr>
 <h3 id="数组与空格"><a href="#数组与空格" class="headerlink" title="数组与空格"></a>数组与空格</h3><p>使用<code>ls | grep</code>的方式来过滤结果获取文件名数组的最大问题是，如果文件名包含空格，那么前后会被分割成两个单元，导致处理比较困难。</p>
 <p>比较讨巧的方法是临时用特殊符号代替空格，在使用时再替换回来。这种方法不会改变文件名，也不用写复杂的数组合并，比较符合简单的设计。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tr " " "?"</div><div class="line"><span class="meta">$</span>&#123;logName//'?'/' '&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tr " " "?"</span><br><span class="line"><span class="meta">$</span>&#123;logName//'?'/' '&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这次简单的脚本实验，对shell有了新的认识，及时记录遇到的问题，相信下次会更有印象。使用脚本，可以让工作更有效率，相信以后也会越用越多。</p>
 
         </div>
@@ -228,7 +246,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-09-20T10:24:35.981Z" itemprop="dateUpdated">2018-09-20 18:24:35</time>
+    最后更新时间：<time datetime="2018-10-08T01:55:15.826Z" itemprop="dateUpdated">2018-10-08 09:55:15</time>
 </span><br>
 
 
@@ -254,8 +272,6 @@
 
         <div class="post-footer">
             
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
-
 
             
 <div class="page-share-wrap">
@@ -264,7 +280,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/杂学/初试Shell脚本/&title=《初试Shell脚本》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/3f22.html&title=《初试Shell脚本》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -274,22 +290,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/杂学/初试Shell脚本/&title=《初试Shell脚本》 — Vanch's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/3f22.html&title=《初试Shell脚本》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/杂学/初试Shell脚本/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/3f22.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《初试Shell脚本》 — Vanch's Blog&url=https://vanchchen.github.io/杂学/初试Shell脚本/&via=https://vanchchen.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《初试Shell脚本》 — Vanch's Blog&url=https://vanchchen.github.io/p/3f22.html&via=https://vanchchen.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/杂学/初试Shell脚本/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/3f22.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -312,7 +328,7 @@
 <nav class="post-nav flex-row flex-justify-between">
   
     <div class="waves-block waves-effect prev">
-      <a href="/面试/AssociatedObject原理实现/" id="post-prev" class="post-nav-link">
+      <a href="/p/f39e.html" id="post-prev" class="post-nav-link">
         <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
         <h4 class="title">AssociatedObject关联对象原理实现</h4>
       </a>
@@ -321,7 +337,7 @@
 
   
     <div class="waves-block waves-effect next">
-      <a href="/面试/Category探索/" id="post-next" class="post-nav-link">
+      <a href="/p/5cb0.html" id="post-next" class="post-nav-link">
         <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
         <h4 class="title">Category探索</h4>
       </a>
@@ -342,6 +358,30 @@
 
 
 
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "YfjeluQO2LJ7T9AjqGw6P7QM-gzGzoHsz",
+            appKey: "wrdh0ULPmDxPuPyOYdcLAzdU",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
 
 
 
@@ -384,6 +424,15 @@
         <footer class="footer">
     <div class="top">
         
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        Hola！第<span id="busuanzi_value_site_uv"></span>位客人
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        本站居然被看了<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</p>
+
 
         <p>
             
@@ -411,7 +460,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/杂学/初试Shell脚本/&title=《初试Shell脚本》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/3f22.html&title=《初试Shell脚本》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -421,22 +470,22 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/杂学/初试Shell脚本/&title=《初试Shell脚本》 — Vanch's Blog&source=" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/3f22.html&title=《初试Shell脚本》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/杂学/初试Shell脚本/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/3f22.html" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《初试Shell脚本》 — Vanch's Blog&url=https://vanchchen.github.io/杂学/初试Shell脚本/&via=https://vanchchen.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《初试Shell脚本》 — Vanch's Blog&url=https://vanchchen.github.io/p/3f22.html&via=https://vanchchen.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/杂学/初试Shell脚本/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/3f22.html" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -447,7 +496,7 @@
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACIklEQVR42u3aQY7CMAwFUO5/aWYLYijfdrto8rJCFSR5RbJsJ49HPJ4v4/XJ53eOnyRzHv9qNDAwMG7LeB6OZMnqDMfgfBUMDIzdGN8i2FmfjwHJPD/2jIGBgVHcbh6m83UxMDAwTpsurjfzF4GBgYGRl6B52pc/r5a+J9TiGBgYN2TMQ+R1ny8538DAwLgV41kcx22yKnuyk7fVMTAwlmbkAS4nJcnlPOBiYGDsyei1+/NAnB9e5r8t3FzDwMC4LWOSwFUb90kqWW3zYWBg7MNIAuiEmiSReRr6z94wMDCWZsyL1ckVil4RGx0bYGBgLMeolqnHW8+L0iqv8A9gYGAsxJg07nubTvB5KvmW4WJgYCzKqC7TS/iuu7SBgYGBUW2oTcra6tFC4SQWAwPj5oxJaz7ZdPV19NbCwMDYjZEEwWoYTUrlpK3WLF8xMDCWYJwVfM9tw+VHGhgYGLsx8ksY1RElefGxKAYGxj6M3iWMyXfybVWbfRgYGGszJila70pZ70LGyRU5BgbGDRl5g6wKaJamk6YbBgbGNoy89XbFDOVUFQMDY1HGvGU2aoQNAvfX3BYDA2M5RjVdmyyQFLdnvRoMDIz1GJMgmySCeaidNOwwMDB2YBQaW3HEy5v+vVTyRy2OgYGB0bqcMQ/H5fMEDAyMLRnzZK6Xev5AYmBgbMBIithe+/66yxwYGBj7MHp51/ywcxKgmyceGBgY92P8AZTYapgTSqunAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxUlEQVR42u3ay47CMAwFUP7/pxmJ1UgM6bXdho50sqoCbQ8srPjxeMTr+Vrv1793Pn3n/dNPzzlt4eLijrnP5Vq/fr2/Jib3/vGTcHFxN3KT4NX7ZjXwHdhwcXFvxl0HssmhBxcX9/9yCw8dBztcXNw7cJPkJ0mNkp38+bi4uN/iTgqmZ11vqu/i4uKOuxLV0meeDvUWLi7uHm5+QMlfmYTCSTqEi4u7h9tLgfI0Zj5fgYuL+y3uWcNY1fJK/i5cXNyd3Gq7tDpI0Qt/UX0XFxf3Au68NZKnQL3/8qCKg4uLewE3STZ6O0nkaaZMuLi4W7jzckaSzCQF03JmhouLezG32dIYH1/ywIeLi7uT2wthCXFSu8XFxf0Wt3o0yXfyEJnfi4uLu4d71lBFHsKqI1wHBVNcXNwLuPOBibyVMi+k4uLi7uRWU52k3Bm1S6sVUVxc3I3cfOVtj94QRrnbg4uLewG3GlDy8mj1J+WBEhcXdw+3F7zyQ0x1bAsXF/c+3HKdNT7WVJOfqL6Li4t7G27SNM1Hr6pNWVxc3Dtze03Z04Y5cHFxN3KrrdZe6lItr4xyNVxc3AF30mRNoOu0BxcX92bcH/QYtHt0BdPxAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
 
 
@@ -458,9 +507,11 @@
 var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1274985211&web_id=1274985211')
+
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.min.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -480,12 +531,14 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.min.js?v=1.7.2" async></script>
 
 
 
 
 
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
