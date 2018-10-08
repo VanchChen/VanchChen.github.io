@@ -20,9 +20,9 @@
     <meta name="theme-color" content="#00BCD4">
     
     
-    <meta name="keywords" content="iOS,Shell">
+    <meta name="keywords" content="iOS,Objective-C,ObjC,Swift,Shell">
     <meta name="description" content="嘿嘿嘿～">
-<meta name="keywords" content="iOS,Shell">
+<meta name="keywords" content="iOS,Objective-C,ObjC,Swift,Shell">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Vanch&#39;s Blog">
 <meta property="og:url" content="https://vanchchen.github.io/index.html">
@@ -164,6 +164,51 @@
 <div class="container body-wrap">
 
     <ul class="post-list">
+    
+        <li class="post-list-item fade">
+            <article id="post-脚本解析Crash"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-10-08 16:06:38" datetime="2018-10-08T08:06:38.000Z"  itemprop="datePublished">2018-10-08</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Shell/">Shell</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/p/2616.html">脚本处理iOS的Crash日志</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        背景当我们打包app时，可以选择生成对应的符号表，其保存 16 进制函数地址映射信息，通过给定的函数起始地址和偏移量，可以对应函数具体信息以供分析。
+所以我们拿到测试给的闪退日志(.crash)时，需要找到打包时对应生成的符号表(.dSYM)作为钥匙解析。具体分为下面几个步骤
+
+dwarfdump --uuid 命令获取 .dSYM 的 uuid
+打开 .crash 文件，在特定位置找到 u...
+    
+
+        <a href="/p/2616.html" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+</article>
+
+        </li>
     
         <li class="post-list-item fade">
             <article id="post-AssociatedObject原理实现"

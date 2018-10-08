@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>脚本处理iOS的Crash日志 | Vanch&#39;s Blog | 欢迎来到我的世界</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#00BCD4">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="背景当我们打包app时，可以选择生成对应的符号表，其保存 16 进制函数地址映射信息，通过给定的函数起始地址和偏移量，可以对应函数具体信息以供分析。 所以我们拿到测试给的闪退日志(.crash)时，需要找到打包时对应生成的符号表(.dSYM)作为钥匙解析。具体分为下面几个步骤  dwarfdump --uuid 命令获取 .dSYM 的 uuid 打开 .crash 文件，在特定位置找到 uuid">
+<meta name="keywords" content="iOS,Objective-C,ObjC,Swift,Shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="脚本处理iOS的Crash日志">
+<meta property="og:url" content="https://vanchchen.github.io/p/2616.html">
+<meta property="og:site_name" content="Vanch&#39;s Blog">
+<meta property="og:description" content="背景当我们打包app时，可以选择生成对应的符号表，其保存 16 进制函数地址映射信息，通过给定的函数起始地址和偏移量，可以对应函数具体信息以供分析。 所以我们拿到测试给的闪退日志(.crash)时，需要找到打包时对应生成的符号表(.dSYM)作为钥匙解析。具体分为下面几个步骤  dwarfdump --uuid 命令获取 .dSYM 的 uuid 打开 .crash 文件，在特定位置找到 uuid">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-08T08:10:13.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="脚本处理iOS的Crash日志">
+<meta name="twitter:description" content="背景当我们打包app时，可以选择生成对应的符号表，其保存 16 进制函数地址映射信息，通过给定的函数起始地址和偏移量，可以对应函数具体信息以供分析。 所以我们拿到测试给的闪退日志(.crash)时，需要找到打包时对应生成的符号表(.dSYM)作为钥匙解析。具体分为下面几个步骤  dwarfdump --uuid 命令获取 .dSYM 的 uuid 打开 .crash 文件，在特定位置找到 uuid">
+    
+        <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/images/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Vanch</h5>
+          <a href="mailto:447389831@qq.com" title="447389831@qq.com" class="mail">447389831@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/iOS/"  >
+                <i class="icon icon-lg icon-apple"></i>
+                iOS
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/VanchChen" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.cnblogs.com/vanch/" target="_blank" >
+                <i class="icon icon-lg icon-rss"></i>
+                博客园
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">脚本处理iOS的Crash日志</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">脚本处理iOS的Crash日志</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-10-08T08:06:38.000Z" itemprop="datePublished" class="page-time">
+  2018-10-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Shell/">Shell</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#步骤实现"><span class="post-toc-number">2.</span> <span class="post-toc-text">步骤实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#输入Crash日志"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">输入Crash日志</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#输入dSYM符号表"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">输入dSYM符号表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查找symbolicatecrash工具"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">查找symbolicatecrash工具</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#执行解析命令"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">执行解析命令</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#遇到的问题"><span class="post-toc-number">3.</span> <span class="post-toc-text">遇到的问题</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#怎么获取函数返回值？"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">怎么获取函数返回值？</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#全局变量记录"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">全局变量记录</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Return返回值"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">Return返回值</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#获取打印值"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">获取打印值</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#循环输入合法路径"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">循环输入合法路径</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-脚本解析Crash"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">脚本处理iOS的Crash日志</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-10-08 16:06:38" datetime="2018-10-08T08:06:38.000Z"  itemprop="datePublished">2018-10-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Shell/">Shell</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当我们打包app时，可以选择生成对应的符号表，其保存 16 进制函数地址映射信息，通过给定的函数起始地址和偏移量，可以对应函数具体信息以供分析。</p>
+<p>所以我们拿到测试给的闪退日志(<code>.crash</code>)时，需要找到打包时对应生成的符号表(<code>.dSYM</code>)作为钥匙解析。具体分为下面几个步骤</p>
+<ol>
+<li><code>dwarfdump --uuid</code> 命令获取 <code>.dSYM</code> 的 <code>uuid</code></li>
+<li>打开 <code>.crash</code> 文件，在特定位置找到 <code>uuid</code></li>
+<li>根据 <code>arm</code> 版本比对两者是否一致</li>
+<li><p>到 <code>Xcode</code> 目录下寻找 <code>symbolicatecrash</code> 工具</p>
+<blockquote>
+<p>不同版本文件路径不同，具体版本请谷歌。Xcode9路径是/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/</p>
+</blockquote>
+</li>
+<li><p>设置终端环境变量</p>
+<p> <code>export DEVELOPER_DIR=&quot;/Applications/Xcode.app/Contents/Developer&quot;</code></p>
+</li>
+<li>使用 <code>symbolicatecrash</code> 工具解析日志<br> <code>symbolicatecrash .crash .dsym &gt; a.out</code></li>
+</ol>
+<p>虽然过程不复杂，但是每次都需要手动执行一次检查与命令，过于繁琐，所以决定用脚本化提高效率。</p>
+<hr>
+<h2 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现"></a>步骤实现</h2><h3 id="输入Crash日志"><a href="#输入Crash日志" class="headerlink" title="输入Crash日志"></a>输入Crash日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>要求输入crash文件路径</span><br><span class="line">inputFile 'Please Input Crash File' 'crash'</span><br><span class="line">crashPath=$filePath</span><br></pre></td></tr></table></figure>
+<p>由于需要输入两种不同后缀的文件路径，且都需要检查，因此统一定义一个方法。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>定义全局变量</span><br><span class="line">filePath=</span><br><span class="line"><span class="meta">#</span>输入文件路径</span><br><span class="line">inputFile() &#123;</span><br><span class="line">    readSuccess=false</span><br><span class="line">    #首先清空变量值</span><br><span class="line">    filePath=</span><br><span class="line">    while [ $readSuccess = false ]; do </span><br><span class="line">        echo $1</span><br><span class="line">        #读取到变量中</span><br><span class="line">        read -a filePath</span><br><span class="line">        if [[ ! -e $filePath || $&#123;filePath##*.&#125; != $2 ]]; then</span><br><span class="line">            echo "Input file is not ."$2</span><br><span class="line">        else</span><br><span class="line">            readSuccess=true</span><br><span class="line">        fi</span><br><span class="line">    done</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>.dSYM</code> 是文件夹路径，所以这里简单的判断了路径是否存在，如果不存在就继续让用户输入。</p>
+<blockquote>
+<p>Shell命令中判断分为[]与[[]]，后者比前者更通用，可以使用 || 正则运算等。</p>
+<p>判断中，-f表示检查是否存在该文件，-d表示检查是否存在文件夹，-e表示检查是否存在该路径</p>
+</blockquote>
+<h3 id="输入dSYM符号表"><a href="#输入dSYM符号表" class="headerlink" title="输入dSYM符号表"></a>输入dSYM符号表</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dsymSuccess=false</span><br><span class="line">while [ $dsymSuccess = false ]; do</span><br><span class="line">    #要求输入dSYM文件路径</span><br><span class="line">    inputFile 'Please Input dSYM File' 'dSYM'</span><br><span class="line">    dsymPath=$filePath</span><br><span class="line">    #检查是否匹配</span><br><span class="line">    checkUUID "$crashPath" "$dsymPath"</span><br><span class="line">    match=$?</span><br><span class="line">    if [ $match -eq 0 ]; then</span><br><span class="line">        echo 'UUID not match!'</span><br><span class="line">    else</span><br><span class="line">        dsymSuccess=true</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>循环获取匹配 <code>UUID</code> 的 <code>dSYM</code> ，这里使用了另一种方法获取方法返回值，具体之后章节会总结。</p>
+<h3 id="查找symbolicatecrash工具"><a href="#查找symbolicatecrash工具" class="headerlink" title="查找symbolicatecrash工具"></a>查找symbolicatecrash工具</h3><p>在 <code>Xcode</code> 文件夹指定路径下查找工具，加快效率，如果没找到就停止运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 查找symbolicatecrash解析工具，内置在Xcode的库文件中</span><br><span class="line">toolPath=`find /Applications/Xcode.app/Contents/SharedFrameworks -name symbolicatecrash | head -n 1`</span><br><span class="line">if [ ! -f $toolPath ]; then</span><br><span class="line">    echo "Symbolicatecrash not exist!"</span><br><span class="line">    exit 0</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h3 id="执行解析命令"><a href="#执行解析命令" class="headerlink" title="执行解析命令"></a>执行解析命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>先设置环境变量</span><br><span class="line">export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"</span><br><span class="line"><span class="meta">#</span>指定解析结果路径</span><br><span class="line">crashName=`basename $crashPath`</span><br><span class="line">afterPath="$(dirname "$crashPath")"/"$&#123;crashName%%.*&#125;""_after.crash"</span><br><span class="line"><span class="meta">#</span>开始解析</span><br><span class="line"><span class="meta">$</span>toolPath "$crashPath" "$dsymPath" &gt; "$afterPath" 2&gt; /dev/null</span><br></pre></td></tr></table></figure>
+<p>这里我将错误信息导流到 <code>/dev/null</code>，保证解析文件没有杂乱信息。</p>
+<hr>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><h3 id="怎么获取函数返回值？"><a href="#怎么获取函数返回值？" class="headerlink" title="怎么获取函数返回值？"></a>怎么获取函数返回值？</h3><p>之前没有处理过需要返回数值的方法，所以一开始有点懵，查询资料后最终采用了两种方式实现了效果，现在做一些总结。</p>
+<h4 id="全局变量记录"><a href="#全局变量记录" class="headerlink" title="全局变量记录"></a>全局变量记录</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>定义全局变量</span><br><span class="line">filePath=</span><br><span class="line">inputFile() &#123;</span><br><span class="line">    #读取到变量中</span><br><span class="line">    read -a filePath</span><br><span class="line">&#125;</span><br><span class="line">inputFile</span><br><span class="line">crashPath=$filePath</span><br></pre></td></tr></table></figure>
+<p>通过 <code>inputFile</code> 方法来了解一下，首先定义一个全局变量为 <code>filePath</code>，在方法中重新赋值，方法结束后读取全局变量中的数据。</p>
+<p>这种方法的好处是可以自定义返回参数类型和个数，缺点是容易和其他变量搞混。</p>
+<h4 id="Return返回值"><a href="#Return返回值" class="headerlink" title="Return返回值"></a>Return返回值</h4><p>类似与C语言中的用法，脚本也支持 <code>retrun 0</code> 返回结果并停止运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">checkUUID() &#123;</span><br><span class="line">    grep "$arm64id" "$1"</span><br><span class="line">    if [ $? -ne 0 ]; then</span><br><span class="line">        return 1;</span><br><span class="line">    fi</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">checkUUID "$crashPath" "$dsymPath"</span><br><span class="line">match=$?</span><br></pre></td></tr></table></figure>
+<p>获取结果的方式为 <code>$?</code>，其能够返回环境中最后一个指令结果，也就是之前执行的<code>checkUUID</code>的结果。</p>
+<p>优点是简洁明了，符合编码习惯，缺点是返回值只能是 <code>0-255</code> 的数字，不能返回其他类型的数据。</p>
+<h4 id="获取打印值"><a href="#获取打印值" class="headerlink" title="获取打印值"></a>获取打印值</h4><p>还有一种方法其实平时一直在使用，只不过并不了解其运行方式。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">crashName=`basename $crashPath`</span><br><span class="line"></span><br><span class="line">print() &#123;</span><br><span class="line">    echo "Hello World"</span><br><span class="line">&#125;</span><br><span class="line">text=$(print)</span><br></pre></td></tr></table></figure></p>
+<p>运行系统预设的方法或者自定义方法，将执行命令用 <code>$()</code> 的方式使用，就可以获取该命令中所有打印的信息，赋值到变量就可以拿到需要的返回值。</p>
+<p>优点是功能全效率高，使用字符串的方式可以传递定制化信息，缺点是不可预期返回结果，需要通过字符串查找等命令辅助。</p>
+<h3 id="循环输入合法路径"><a href="#循环输入合法路径" class="headerlink" title="循环输入合法路径"></a>循环输入合法路径</h3><p>在我的设想中，需要用户输入匹配的 <code>dSYM</code> 文件路径，如果不匹配，则重新输入，直到合法。为了支持嵌套，需要定义局部变量控制循环，具体代码如下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dsymSuccess=false</span><br><span class="line">while [ $dsymSuccess = false ]; do</span><br><span class="line">    #要求输入dSYM文件路径</span><br><span class="line">    inputFile 'Please Input dSYM File' 'dSYM'</span><br><span class="line">    dsymPath=$filePath</span><br><span class="line">    #检查是否匹配</span><br><span class="line">    checkUUID "$crashPath" "$dsymPath"</span><br><span class="line">    match=$?</span><br><span class="line">    if [ $match -eq 0 ]; then</span><br><span class="line">        echo 'UUID not match!'</span><br><span class="line">    else</span><br><span class="line">        dsymSuccess=true</span><br><span class="line">    fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure></p>
+<p>### 处理字符串</p>
+<p>获取到 <code>UUID</code> 所有输出信息后，需要截取出对应平台的信息，处理还是不太熟悉，特地整理如下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>原始信息</span><br><span class="line">UUID: 92E495AA-C2D4-3E9F-A759-A50AAEF446CD (armv7) /Volumes/.dSYM/Contents/Resources/DWARF/app</span><br><span class="line">UUID: 536527A8-0243-34DB-AE08-F1F64ACA4351 (arm64) /Volumes/.dSYM/Contents/Resources/DWARF/app</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>去除中间间隔-</span><br><span class="line">uuid=$&#123;uuid//-/&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>从后往前找第一个匹配 \(arm64的，并且都删除</span><br><span class="line">arm64id=$&#123;uuid% \(arm64*&#125;</span><br><span class="line"><span class="meta">#</span>处理后</span><br><span class="line">UUID: 92E495AAC2D43E9FA759A50AAEF446CD (armv7) /Volumes/.dSYM/Contents/Resources/DWARF/app</span><br><span class="line">UUID: 536527A8024334DBAE08F1F64ACA4351</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>从前往后找最后一个UUID: ，并删除</span><br><span class="line">arm64id=$&#123;arm64id##*UUID: &#125;</span><br><span class="line"><span class="meta">#</span>处理后 </span><br><span class="line">536527A8024334DBAE08F1F64ACA4351</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>看似简单的脚本，也花了一天时间编写，总体还是不太熟练，仍需努力联系。</p>
+<p>这次特地尝试了与上次不同的参数输入方法，使用提示输入的方式，果然遇到了新的问题。好在都查资料解决了，结果还算满意。</p>
+<p>脚本我提交到了<a href="https://github.com/VanchChen/AnalysisCrash" target="_blank" rel="noopener">Github</a>，欢迎大家指教共同进步！给个关注最好啦～</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-10-08T08:10:13.268Z" itemprop="dateUpdated">2018-10-08 16:10:13</time>
+</span><br>
+
+
+        
+        本文版权归<a href="https://vanchchen.github.io/" target="_blank">Vanch</a>所有，欢迎转载，但未经作者同意必须保留此段声明，否则保留追究法律责任的权利。
+        
+    </div>
+    
+    <footer>
+        <a href="https://vanchchen.github.io">
+            <img src="/images/avatar.jpg" alt="Vanch">
+            Vanch
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/2616.html&title=《脚本处理iOS的Crash日志》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/2616.html&title=《脚本处理iOS的Crash日志》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/2616.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《脚本处理iOS的Crash日志》 — Vanch's Blog&url=https://vanchchen.github.io/p/2616.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/2616.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/p/f39e.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">AssociatedObject关联对象原理实现</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "YfjeluQO2LJ7T9AjqGw6P7QM-gzGzoHsz",
+            appKey: "wrdh0ULPmDxPuPyOYdcLAzdU",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/images/wechat.jpg" data-alipay="/images/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        Hola！第<span id="busuanzi_value_site_uv"></span>位客人
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        本站居然被看了<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Vanch &copy; 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/2616.html&title=《脚本处理iOS的Crash日志》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/2616.html&title=《脚本处理iOS的Crash日志》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/2616.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《脚本处理iOS的Crash日志》 — Vanch's Blog&url=https://vanchchen.github.io/p/2616.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/2616.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABzUlEQVR42u3aQQ7CMAxEUe5/6XIAlPLHTkyRflcI0fSVxSh2/Hrh6/q4Vr9Zff68a7XOhkuuXLlt7nV7rR65+oavvFrty18jV67cQS4PJh5zKffeIFeu3H/krl6AbHrkypX771y+ren/HXLlyv0tl29BSCHEy6GDtZpcuXIbXN6lPPf5SH9Xrly5Je4VXp3guw9E9HS5cuWOcHmgpO1OsulJnytXrtwZLr8BvTce1CiOesiVK3eE2zlM5Qcq5N6gOSJXrtxxLilReBmzq9kqV67cSS5flLRQeczxg5Nl8SNXrtxj3E77g4fa5uJHrly5g30GHihkzIL3MeIgkytX7giXR8nerU86tiVXrtx5LomzNKRqU1UoyOTKlXuY22lnpG0OXvygCJMrV+6PuJ0CptYu+bKpkitX7iCXUNIyKV3h/hu5cuXOc9PSpXY0m25x4ukwuXLltrlXeKXDFrWRr/gEWK5cuVu5tZGIvcer9+sUX0auXLltLg8v/gKdQCwOZsmVK/cAl8dQbXyqc3C77OLIlSv3YdwTQRZUbHLlyn0YNwgd0q9NW6hy5cod5PLQ4cVPGohoUyVXrtwRbu3gMx3ISH+zob8rV67cCvcNnqxSwc1khF8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1274985211&web_id=1274985211')
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
