@@ -14,7 +14,7 @@
     
     
     
-    <title>Vanch&#39;s Blog | 欢迎来到我的世界</title>
+    <title>Vanch&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#00BCD4">
@@ -166,6 +166,55 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-刨根问底KVO原理"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2018-10-15 17:31:00" datetime="2018-10-15T09:31:00.000Z"  itemprop="datePublished">2018-10-15</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
+
+
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/p/52b3.html">刨根问底KVO原理</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        介绍KVO( NSKeyValueObserving )是一种监测对象属性值变化的观察者模式机制。其特点是无需事先修改被观察者代码，利用 runtime 实现运行中修改某一实例达到目的，保证了未侵入性。
+A对象指定观察B对象的属性后，当属性发生变更，A对象会收到通知，获取变更前以及变更的状态，从而做进一步处理。
+在实际生产环境中，多用于应用层观察模型层数据变动，接收到通知后更新，从而达成比较...
+    
+
+        <a href="/p/52b3.html" class="post-more waves-effect waves-button">
+            阅读全文…
+        </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理分析/">原理分析</a></li></ul>
+
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-脚本解析Crash"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -240,7 +289,7 @@ dwarfdump --uuid 命令获取 .dSYM 的 uuid
 
     
         介绍关联对象（AssociatedObject）是Objective-C 2.0运行时的一个特性，允许开发者对已经存在的类在扩展中添加自定义的属性。在实际生产过程中，比较常用的方式是给分类（Category）添加成员变量。
-例子1234567891011121314151617181920#import &lt;objc/runtime.h&gt;@interface NSObject (...
+例子1234567891011121314151617181920#import &lt;objc/runtime.h&gt;@interface NSObject (A...
     
 
         <a href="/p/f39e.html" class="post-more waves-effect waves-button">
@@ -287,10 +336,10 @@ dwarfdump --uuid 命令获取 .dSYM 的 uuid
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        背景临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。
-于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。
+        背景临上线前测试比较努力，遇到闪退或者其他问题，会把日志包打给我，由于app内存限制，目前每次打包都是1m大小，所以有时查找问题的上下文比较吃力。同时由于日志比较多，根据关键词过滤的需求越来越重要。
+于是决定学写脚本完成这个任务，根据我的要求，工作流程应该是传入压缩包，根据后缀名解压，根据日期排序后合并成一个文件，按需过滤关键词。
 
-先上代码1234567891011121314151...
+先上代码1234567891011121314151617...
     
 
         <a href="/p/3f22.html" class="post-more waves-effect waves-button">
@@ -331,8 +380,8 @@ dwarfdump --uuid 命令获取 .dSYM 的 uuid
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。
-123456789struct category_t &#123;    const char *name;    classref_t cls;    struct method_lis...
+        什么是Category?Category是Objective-C 2.0之后添加的语言特性，Category的主要作用是为已经存在的类添加方法，一般称为分类，文件名格式是”NSObject+A.h”。
+123456789struct category_t &#123;    const char *name;    classref_t cls;    struct method_list_...
     
 
         <a href="/p/5cb0.html" class="post-more waves-effect waves-button">
