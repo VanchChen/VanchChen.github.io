@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Vanch&#39;s Blog">
 <meta property="og:description" content="前言本文借鉴整理了iOS高级开发常见的面试题，并且分博客一一分析，希望能和大家一起进步学习。 欢迎大家关注我的 Github👏以及相关博客 简书 博客园 大家的鼓励是我前进的动力😄 iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ Category探索 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-08T09:19:25.641Z">
+<meta property="og:updated_time" content="2018-10-16T01:35:44.505Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS面试题">
 <meta name="twitter:description" content="前言本文借鉴整理了iOS高级开发常见的面试题，并且分博客一一分析，希望能和大家一起进步学习。 欢迎大家关注我的 Github👏以及相关博客 简书 博客园 大家的鼓励是我前进的动力😄 iOS基础题 分类和扩展有什么区别？可以分别用来做什么？分类有哪些局限性？分类的结构体里面有哪些成员？ Category探索 讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？ 被">
@@ -208,7 +208,7 @@
 <li>讲一下atomic的实现机制；为什么不能保证绝对的线程安全（最好可以结合场景来说）？</li>
 <li>被weak修饰的对象在被释放的时候会发生什么？是如何实现的？知道sideTable么？里面的结构可以画出来么？</li>
 <li>关联对象有什么应用，系统如何管理关联对象？其被释放的时候需要手动将其指针置空么？<br> <a href="https://vanchchen.github.io/p/f39e.html">AssociatedObject关联对象原理实现</a></li>
-<li>KVO的底层实现？如何取消系统默认的KVO并手动触发（给KVO的触发设定条件：改变的值符合某个条件时再触发KVO）？</li>
+<li>KVO的底层实现？如何取消系统默认的KVO并手动触发（给KVO的触发设定条件：改变的值符合某个条件时再触发KVO）？<br> <a href="https://vanchchen.github.io/p/52b3.html">刨根问底KVO原理</a></li>
 <li><code>Autoreleasepool</code>所使用的数据结构是什么？<code>AutoreleasePoolPage</code>结构体了解么？</li>
 <li>讲一下对象，类对象，元类，跟元类结构体的组成以及他们是如何相关联的？为什么对象方法没有保存的对象结构体里，而是保存在类对象的结构体里？</li>
 <li><code>class_ro_t</code> 和  <code>class_rw_t</code> 的区别？</li>
@@ -286,7 +286,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-10-08T09:19:25.641Z" itemprop="dateUpdated">2018-10-08 17:19:25</time>
+    最后更新时间：<time datetime="2018-10-16T01:35:44.505Z" itemprop="dateUpdated">2018-10-16 09:35:44</time>
 </span><br>
 
 
