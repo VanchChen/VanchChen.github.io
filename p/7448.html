@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>三种UIScrollView嵌套实现方案 | Vanch&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#00BCD4">
+    
+    
+    <meta name="keywords" content="重构">
+    <meta name="description" content="背景随着产品功能不断的迭代，总会有需求希望在保证不影响其他区域功能的前提下，在某一区域实现根据选择器切换不同的内容显示。                                                                                                            苹果并不推荐嵌套滚动视图，如果直接添加的话，就会出现下图这种情况">
+<meta name="keywords" content="重构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三种UIScrollView嵌套实现方案">
+<meta property="og:url" content="https://vanchchen.github.io/p/7448.html">
+<meta property="og:site_name" content="Vanch&#39;s Blog">
+<meta property="og:description" content="背景随着产品功能不断的迭代，总会有需求希望在保证不影响其他区域功能的前提下，在某一区域实现根据选择器切换不同的内容显示。                                                                                                            苹果并不推荐嵌套滚动视图，如果直接添加的话，就会出现下图这种情况">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/gif/gif_1699821243_12.gif">
+<meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/gif/gif_1544777437_77.gif">
+<meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731447_55.jpg">
+<meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731463_75.jpg">
+<meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731478_85.jpg">
+<meta property="og:updated_time" content="2018-12-25T09:54:50.335Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三种UIScrollView嵌套实现方案">
+<meta name="twitter:description" content="背景随着产品功能不断的迭代，总会有需求希望在保证不影响其他区域功能的前提下，在某一区域实现根据选择器切换不同的内容显示。                                                                                                            苹果并不推荐嵌套滚动视图，如果直接添加的话，就会出现下图这种情况">
+<meta name="twitter:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/gif/gif_1699821243_12.gif">
+    
+        <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/images/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Vanch</h5>
+          <a href="mailto:447389831@qq.com" title="447389831@qq.com" class="mail">447389831@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/iOS/"  >
+                <i class="icon icon-lg icon-apple"></i>
+                iOS
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/VanchChen" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.cnblogs.com/vanch/" target="_blank" >
+                <i class="icon icon-lg icon-rss"></i>
+                博客园
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">三种UIScrollView嵌套实现方案</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">三种UIScrollView嵌套实现方案</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-12-25T09:34:25.000Z" itemprop="datePublished" class="page-time">
+  2018-12-25
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分而治之"><span class="post-toc-number">2.</span> <span class="post-toc-text">分而治之</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#各自为政"><span class="post-toc-number">3.</span> <span class="post-toc-text">各自为政</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中央集权"><span class="post-toc-number">4.</span> <span class="post-toc-text">中央集权</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-UIScrollView嵌套"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">三种UIScrollView嵌套实现方案</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-12-25 17:34:25" datetime="2018-12-25T09:34:25.000Z"  itemprop="datePublished">2018-12-25</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>随着产品功能不断的迭代，总会有需求希望在保证不影响其他区域功能的前提下，在某一区域实现根据选择器切换不同的内容显示。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/gif/gif_1699821243_12.gif" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>苹果并不推荐嵌套滚动视图，如果直接添加的话，就会出现下图这种情况，手势的冲突造成了体验上的悲剧。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/gif/gif_1544777437_77.gif" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>在实际开发中，我也不断的在思考解决方案，经历了几次重构后，有了些改进的经验，因此抽空整理了三种方案，他们实现的最终效果都是一样的。</p>
+<hr>
+<h2 id="分而治之"><a href="#分而治之" class="headerlink" title="分而治之"></a>分而治之</h2><p>最常见的一种方案就是使用 <code>UITableView</code> 作为外部框架，将子视图的内容通过 <code>UITableViewCell</code> 的方式展现。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731447_55.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>这种做法的好处在于解耦性，框架只要接受不同的数据源就能刷新对应的内容。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(<span class="number">_</span> tableView: UITableView, heightForRowAt indexPath: IndexPath)</span></span> </span><br><span class="line">    -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> indexPath.section == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">NSTHeaderHeight</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> segmentView.selectedIndex == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> tableSource.tableView(<span class="number">_</span>:tableView, heightForRowAt:indexPath)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> webSource.tableView(<span class="number">_</span>:tableView, heightForRowAt:indexPath)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是相对的也有一个问题，如果内部是一个独立的滚动视图，比如 <code>UIWebView</code> 的子视图 <code>UIWebScrollView</code>，还是会有手势冲突的情况。</p>
+<p>常规做法首先禁止内部视图的滚动，当滚动到网页的位置时，启动网页的滚动并禁止外部滚动，反之亦然。</p>
+<p>不幸的是，这种方案最大的问题是<strong>顿挫感</strong>。</p>
+<p>内部视图初始是不能滚动的，所以外部视图作为整套事件的接收者。当滚动到预设的位置并开启了内部视图的滚动，事件还是传递给唯一接收者外部视图，只有松开手结束事件后重新触发，才能使内部视图开始滚动。</p>
+<p>好在有一个方法可以解决这个问题。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidScroll</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> scrollView == tableView &#123;</span><br><span class="line">        <span class="comment">//外部在滚动</span></span><br><span class="line">        <span class="keyword">if</span> offset &gt; anchor &#123;</span><br><span class="line">            <span class="comment">//滚到过了锚点，还原外部视图位置，添加偏移到内部</span></span><br><span class="line">            tableView.setContentOffset(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: anchor), animated: <span class="literal">false</span>)</span><br><span class="line">            <span class="keyword">let</span> webOffset = webScrollView.contentOffset.y + offset - anchor</span><br><span class="line">            webScrollView.setContentOffset(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: webOffset), animated: <span class="literal">false</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> offset &lt; anchor &#123;</span><br><span class="line">            <span class="comment">//没滚到锚点，还原位置</span></span><br><span class="line">            webScrollView.setContentOffset(<span class="type">CGPoint</span>.zero, animated: <span class="literal">false</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//内部在滚动</span></span><br><span class="line">        <span class="keyword">if</span> offset &gt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="comment">//内部滚动还原外部位置</span></span><br><span class="line">            tableView.setContentOffset(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: anchor), animated: <span class="literal">false</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> offset &lt; <span class="number">0</span> &#123;</span><br><span class="line">            <span class="comment">//内部往上滚，添加偏移量到外部视图</span></span><br><span class="line">            <span class="keyword">let</span> tableOffset = tableView.contentOffset.y + offset</span><br><span class="line">            tableView.setContentOffset(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: tableOffset), animated: <span class="literal">false</span>)</span><br><span class="line">            webScrollView.setContentOffset(<span class="type">CGPoint</span>.zero, animated: <span class="literal">false</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidEndScroll</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView)</span></span> &#123;</span><br><span class="line">    <span class="comment">//根据滚动停止后的偏移量，计算谁可以滚动</span></span><br><span class="line">    <span class="keyword">var</span> outsideScrollEnable = <span class="literal">true</span></span><br><span class="line">    <span class="keyword">if</span> scrollView == tableView &#123;</span><br><span class="line">        <span class="keyword">if</span> offset == anchor &amp;&amp;</span><br><span class="line">            webScrollView.contentOffset.y &gt; <span class="number">0</span> &#123;</span><br><span class="line">            outsideScrollEnable = <span class="literal">false</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            outsideScrollEnable = <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> offset == <span class="number">0</span> &amp;&amp;</span><br><span class="line">            tableView.contentOffset.y &lt; anchor &#123;</span><br><span class="line">            outsideScrollEnable = <span class="literal">true</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            outsideScrollEnable = <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置滚动，显示对应的滚动条</span></span><br><span class="line">    tableView.isScrollEnabled = outsideScrollEnable</span><br><span class="line">    tableView.showsHorizontalScrollIndicator = outsideScrollEnable</span><br><span class="line">    webScrollView.isScrollEnabled = !outsideScrollEnable</span><br><span class="line">    webScrollView.showsHorizontalScrollIndicator = !outsideScrollEnable</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过接受滚动回调，我们就可以人为控制滚动行为。当滚动距离超过了我们的预设值，就可以设置另一个视图的偏移量模拟出滚动的效果。滚动状态结束后，再根据判断来定位哪个视图可以滚动。</p>
+<p>当然要使用这个方法，我们就必须把两个滚动视图的代理都设置为控制器，可能会对代码逻辑有影响 (UIWebView 是 UIWebScrollView 的代理，后文有解决方案)。</p>
+<p><code>UITableView</code> 嵌套的方式，能够很好的解决嵌套简单视图，遇到 <code>UIWebView</code> 这种复杂情况，也能人为控制解决。但是作为 <code>UITableView</code> 的一环，有很多限制(比如不同数据源需要不同的设定，有的希望动态高度，有的需要插入额外的视图)，这些都不能很好的解决。</p>
+<hr>
+<h2 id="各自为政"><a href="#各自为政" class="headerlink" title="各自为政"></a>各自为政</h2><p>另一种解决方案比较反客为主，灵感来源于下拉刷新的实现方式，也就是将需要显示的内容塞入负一屏。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731463_75.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>首先保证子视图撑满全屏，把主视图内容插入子视图，并设置 <code>ContentInset</code> 为头部高度，从而实现效果。</p>
+<p>来看下代码实现。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reloadScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//选择当前显示的视图</span></span><br><span class="line">    <span class="keyword">let</span> scrollView = segmentView.selectedIndex == <span class="number">0</span> ? </span><br><span class="line">        tableSource.tableView : webSource.webView.scrollView</span><br><span class="line">    <span class="comment">//相同视图就不操作了</span></span><br><span class="line">    <span class="keyword">if</span> currentScrollView == scrollView &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//从上次的视图中移除外部内容</span></span><br><span class="line">    headLabel.removeFromSuperview()</span><br><span class="line">    segmentView.removeFromSuperview()</span><br><span class="line">    <span class="keyword">if</span> currentScrollView != <span class="literal">nil</span> &#123;</span><br><span class="line">        currentScrollView!.removeFromSuperview()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置新滚动视图的内嵌偏移量为外部内容的高度</span></span><br><span class="line">    scrollView.contentInset = <span class="type">UIEdgeInsets</span>(top: </span><br><span class="line">        <span class="type">NSTSegmentHeight</span> + <span class="type">NSTHeaderHeight</span>, <span class="keyword">left</span>: <span class="number">0</span>, bottom: <span class="number">0</span>, <span class="keyword">right</span>: <span class="number">0</span>)</span><br><span class="line">    <span class="comment">//添加外部内容到新视图上</span></span><br><span class="line">    scrollView.addSubview(headLabel)</span><br><span class="line">    scrollView.addSubview(segmentView)</span><br><span class="line">    view.addSubview(scrollView)</span><br><span class="line">    </span><br><span class="line">    currentScrollView = scrollView</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于在UI层级就只存在一个滚动视图，所以巧妙的避开了冲突。</p>
+<p>相对的，插入的头部视图必须要轻量，如果需要和我例子中一样实现浮动栏效果，就要观察偏移量的变化手动定位。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reloadScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> currentScrollView != <span class="literal">nil</span> &#123;</span><br><span class="line">        currentScrollView!.removeFromSuperview()</span><br><span class="line">        <span class="comment">//移除之前的 KVO</span></span><br><span class="line">        observer?.invalidate()</span><br><span class="line">        observer = <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//新视图添加滚动观察</span></span><br><span class="line">    observer = scrollView.observe(\.contentOffset, options: [.new, .initial]) </span><br><span class="line">    &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] object, change <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> strongSelf = <span class="keyword">self</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">let</span> closureScrollView = object <span class="keyword">as</span> <span class="type">UIScrollView</span></span><br><span class="line">        <span class="keyword">var</span> segmentFrame = strongSelf.segmentView.frame</span><br><span class="line">        <span class="comment">//计算偏移位置</span></span><br><span class="line">        <span class="keyword">let</span> safeOffsetY = closureScrollView.contentOffset.y + </span><br><span class="line">            closureScrollView.safeAreaInsets.top</span><br><span class="line">        <span class="comment">//计算浮动栏位置</span></span><br><span class="line">        <span class="keyword">if</span> safeOffsetY &lt; -<span class="type">NSTSegmentHeight</span> &#123;</span><br><span class="line">            segmentFrame.origin.y = -<span class="type">NSTSegmentHeight</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            segmentFrame.origin.y = safeOffsetY</span><br><span class="line">        &#125;</span><br><span class="line">        strongSelf.segmentView.frame = segmentFrame</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这方法有一个坑，如果加载的 <code>UITableView</code> 需要显示自己的 <code>SectionHeader</code> ，那么由于设置了 <code>ContentInset</code> ，就会导致浮动位置偏移。</p>
+<p>我想到的解决办法就是在回调中不断调整 <code>ContentInset</code> 来解决。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">observer = scrollView.observe(\.contentOffset, options: [.new, .initial]) </span><br><span class="line">&#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] object, change <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> strongSelf = <span class="keyword">self</span> <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> closureScrollView = object <span class="keyword">as</span> <span class="type">UIScrollView</span></span><br><span class="line">    <span class="comment">//计算偏移位置</span></span><br><span class="line">    <span class="keyword">let</span> safeOffsetY = closureScrollView.contentOffset.y + </span><br><span class="line">        closureScrollView.safeAreaInsets.top</span><br><span class="line">    <span class="comment">//ContentInset 根据当前滚动定制</span></span><br><span class="line">    <span class="keyword">var</span> contentInsetTop = <span class="type">NSTSegmentHeight</span> + <span class="type">NSTHeaderHeight</span></span><br><span class="line">    <span class="keyword">if</span> safeOffsetY &lt; <span class="number">0</span> &#123;</span><br><span class="line">        contentInsetTop = <span class="built_in">min</span>(contentInsetTop, fabs(safeOffsetY))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        contentInsetTop = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    closureScrollView.contentInset = <span class="type">UIEdgeInsets</span>(top: </span><br><span class="line">    contentInsetTop, <span class="keyword">left</span>: <span class="number">0</span>, bottom: <span class="number">0</span>, <span class="keyword">right</span>: <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法好在保证了有且仅有一个滚动视图，所有的手势操作都是原生实现，减少了可能存在的联动问题。</p>
+<p>但也有一个小缺陷，那就是头部内容的偏移量都是负数，这不利于三方调用和系统原始调用的实现，需要维护。</p>
+<hr>
+<h2 id="中央集权"><a href="#中央集权" class="headerlink" title="中央集权"></a>中央集权</h2><p>最后介绍一种比较完善的方案。外部视图采用 <code>UIScrollView</code> ，内部视图永远不可滚动，外部边滚动边调整内部的位置，保证了双方的独立性。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545731478_85.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p>与第二种方法相比，切换不同功能就比较简单，只需要替换内部视图，并实现外部视图的代理，滚动时设置内部视图的偏移量就可以了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reloadScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//获取当前数据源</span></span><br><span class="line">    <span class="keyword">let</span> contentScrollView = segmentView.selectedIndex == <span class="number">0</span> ? </span><br><span class="line">    tableSource.tableView : webSource.webView.scrollView</span><br><span class="line">    <span class="comment">//移除之前的视图</span></span><br><span class="line">    <span class="keyword">if</span> currentScrollView != <span class="literal">nil</span> &#123;</span><br><span class="line">        currentScrollView!.removeFromSuperview()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//禁止滚动后添加新视图</span></span><br><span class="line">    contentScrollView.isScrollEnabled = <span class="literal">false</span></span><br><span class="line">    scrollView.addSubview(contentScrollView)</span><br><span class="line">    <span class="comment">//保存当前视图</span></span><br><span class="line">    currentScrollView = contentScrollView</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidScroll</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView)</span></span> &#123;</span><br><span class="line">    <span class="comment">//根据偏移量刷新 Segment 和内部视图的位置</span></span><br><span class="line">    <span class="keyword">self</span>.view.setNeedsLayout()</span><br><span class="line">    <span class="keyword">self</span>.view.layoutIfNeeded()</span><br><span class="line">    <span class="comment">//根据外部视图数据计算内部视图的偏移量</span></span><br><span class="line">    <span class="keyword">var</span> floatOffset = scrollView.contentOffset</span><br><span class="line">    floatOffset.y -= (<span class="type">NSTHeaderHeight</span> + <span class="type">NSTSegmentHeight</span>)</span><br><span class="line">    floatOffset.y = <span class="built_in">max</span>(floatOffset.y, <span class="number">0</span>)</span><br><span class="line">    <span class="comment">//同步内部视图的偏移</span></span><br><span class="line">    <span class="keyword">if</span> currentScrollView?.contentOffset.equalTo(floatOffset) == <span class="literal">false</span> &#123;</span><br><span class="line">        currentScrollView?.setContentOffset(floatOffset, animated: <span class="literal">false</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLayoutSubviews</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidLayoutSubviews()</span><br><span class="line">    <span class="comment">//撑满全部</span></span><br><span class="line">    scrollView.frame = view.bounds</span><br><span class="line">    <span class="comment">//头部固定</span></span><br><span class="line">    headLabel.frame = <span class="type">CGRect</span>(x: <span class="number">15</span>, y: <span class="number">0</span>, </span><br><span class="line">        width: scrollView.frame.size.width - <span class="number">30</span>, height: <span class="type">NSTHeaderHeight</span>)</span><br><span class="line">    <span class="comment">//Segment的位置是偏移和头部高度的最大值</span></span><br><span class="line">    <span class="comment">//保证滚动到头部位置时不浮动</span></span><br><span class="line">    segmentView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, </span><br><span class="line">        y: <span class="built_in">max</span>(<span class="type">NSTHeaderHeight</span>, scrollView.contentOffset.y), </span><br><span class="line">        width: scrollView.frame.size.width, height: <span class="type">NSTSegmentHeight</span>)</span><br><span class="line">    <span class="comment">//调整内部视图的位置</span></span><br><span class="line">    <span class="keyword">if</span> currentScrollView != <span class="literal">nil</span> &#123;</span><br><span class="line">        currentScrollView?.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: segmentView.frame.maxY, </span><br><span class="line">            width: scrollView.frame.size.width, </span><br><span class="line">            height: view.bounds.size.height - <span class="type">NSTSegmentHeight</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当外部视图开始滚动时，其实一直在根据偏移量调整内部视图的位置。</p>
+<p>外部视图的内容高度不是固定的，而是内部视图内容高度加上头部高度，所以需要观察其变化并刷新。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reloadScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> currentScrollView != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="comment">//移除KVO</span></span><br><span class="line">        observer?.invalidate()</span><br><span class="line">        observer = <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//添加内容尺寸的 KVO</span></span><br><span class="line">    observer = contentScrollView.observe(\.contentSize, options: [.new, .initial]) </span><br><span class="line">    &#123;[<span class="keyword">weak</span> <span class="keyword">self</span>] object, change <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> strongSelf = <span class="keyword">self</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">let</span> closureScrollView = object <span class="keyword">as</span> <span class="type">UIScrollView</span></span><br><span class="line">        <span class="keyword">let</span> contentSizeHeight = <span class="type">NSTHeaderHeight</span> + <span class="type">NSTSegmentHeight</span> + </span><br><span class="line">            closureScrollView.contentSize.height</span><br><span class="line">        <span class="comment">//当内容尺寸改变时，刷新外部视图的总尺寸，保证滚动距离</span></span><br><span class="line">        strongSelf.scrollView.contentSize = <span class="type">CGSize</span>(width: <span class="number">0</span>, height: contentSizeHeight)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法也有一个问题，由于内部滚动都是由外部来实现，没有手势的参与，因此得不到 <code>scrollViewDidEndDragging</code> 等滚动回调，如果涉及翻页之类的需求就会遇到困难。</p>
+<p>解决办法是获取内部视图原本的代理，当外部视图代理收到回调时，转发给该代理实现功能。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reloadScrollView</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">typealias</span> <span class="type">ClosureType</span> = <span class="meta">@convention</span>(<span class="built_in">c</span>) (<span class="type">AnyObject</span>, <span class="type">Selector</span>) -&gt; <span class="type">AnyObject</span></span><br><span class="line">    <span class="comment">//定义获取代理方法</span></span><br><span class="line">    <span class="keyword">let</span> sel = #selector(getter: <span class="type">UIScrollView</span>.delegate)</span><br><span class="line">    <span class="comment">//获取滚动视图代理的实现</span></span><br><span class="line">    <span class="keyword">let</span> imp = class_getMethodImplementation(<span class="type">UIScrollView</span>.<span class="keyword">self</span>, sel)</span><br><span class="line">    <span class="comment">//包装成闭包的形式</span></span><br><span class="line">    <span class="keyword">let</span> delegateFunc : <span class="type">ClosureType</span> = <span class="built_in">unsafeBitCast</span>(imp, to: <span class="type">ClosureType</span>.<span class="keyword">self</span>)</span><br><span class="line">    <span class="comment">//获得实际的代理对象</span></span><br><span class="line">    currentScrollDelegate = delegateFunc(contentScrollView, sel) <span class="keyword">as</span>? <span class="type">UIScrollViewDelegate</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">scrollViewDidEndDragging</span><span class="params">(<span class="number">_</span> scrollView: UIScrollView, willDecelerate decelerate: Bool)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> currentScrollDelegate != <span class="literal">nil</span> &#123;</span><br><span class="line">        currentScrollDelegate!.scrollViewDidEndDragging?</span><br><span class="line">            (currentScrollView!, willDecelerate: decelerate)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这里我并没有使用 <code>contentScrollView.delegate</code>，这是因为 <code>UIWebScrollView</code> 重载了这个方法并返回了 <code>UIWebView</code> 的代理。但实际真正的代理是一个 <code>NSProxy</code> 对象，他负责把回调传给 <code>UIWebView</code> 和外部代理。要保证 <code>UIWebView</code> 能正常处理的话，就要让它也收到回调，所以使用 <code>Runtime</code> 执行 <code>UIScrollView</code> 原始获取代理的实现来获取。</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前在生产环境中我使用的是最后一种方法，但其实这些方法互有优缺点。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>分而治之</th>
+<th>各自为政</th>
+<th>中央集权</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>方式</td>
+<td>嵌套</td>
+<td>内嵌</td>
+<td>嵌套</td>
+</tr>
+<tr>
+<td>联动</td>
+<td>手动</td>
+<td>自动</td>
+<td>手动</td>
+</tr>
+<tr>
+<td>切换</td>
+<td>数据源</td>
+<td>整体更改</td>
+<td>局部更改</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>便于理解</td>
+<td>滚动效果好</td>
+<td>独立性</td>
+</tr>
+<tr>
+<td>劣势</td>
+<td>联动复杂</td>
+<td>复杂场景苦手</td>
+<td>模拟滚动隐患</td>
+</tr>
+<tr>
+<td>评分</td>
+<td>🌟🌟🌟</td>
+<td>🌟🌟🌟🌟</td>
+<td>🌟🌟🌟🌟</td>
+</tr>
+</tbody>
+</table>
+<p>技术没有对错，只有适不适合当前的需求。</p>
+<p>分而治之适合 <code>UITableView</code> 互相嵌套的情况，通过数据源的变化能够很好实现切换功能。</p>
+<p>各自为政适合相对简单的页面需求，如果能够避免浮动框，那使用这个方法能够实现最好的滚动效果。</p>
+<p>中央集权适合复杂的场景，通过独立不同类型的滚动视图，使得互相最少影响，但是由于其模拟滚动的特性，需要小心处理。</p>
+<p>希望本文能给大家带来启发，项目开源代码<a href="https://github.com/VanchChen/NestedScrollview" target="_blank" rel="noopener">在此</a>，欢迎指教与Star。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-12-25T09:54:50.335Z" itemprop="dateUpdated">2018-12-25 17:54:50</time>
+</span><br>
+
+
+        
+        本文版权归<a href="https://vanchchen.github.io/" target="_blank">Vanch</a>所有，欢迎转载，但未经作者同意必须保留此段声明，否则保留追究法律责任的权利。
+        
+    </div>
+    
+    <footer>
+        <a href="https://vanchchen.github.io">
+            <img src="/images/avatar.jpg" alt="Vanch">
+            Vanch
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/重构/">重构</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/7448.html&title=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/7448.html&title=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/7448.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&url=https://vanchchen.github.io/p/7448.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/7448.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/p/648.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">腾讯云Mac图床插件</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "YfjeluQO2LJ7T9AjqGw6P7QM-gzGzoHsz",
+            appKey: "wrdh0ULPmDxPuPyOYdcLAzdU",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/images/wechat.jpg" data-alipay="/images/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        Hola！第<span id="busuanzi_value_site_uv"></span>位客人
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        本站居然被看了<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Vanch &copy; 2018</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/7448.html&title=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/7448.html&title=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/7448.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《三种UIScrollView嵌套实现方案》 — Vanch's Blog&url=https://vanchchen.github.io/p/7448.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/7448.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwElEQVR42u3aQZICIQwFUO9/6Z4DTKn/BxqdqceqS1t4uEiFhMcjHteT8fudZ8+v3988cHFxl7nXy/FsyXwD7fyv58TFxT3JfRYxkqAzQyTz4+Li/i1uHsKSpAcXF/c/cXdRcHFxv5ObpyD51Hn4u+WshouLu8DNq5T3Pd9S38XFxR1xr3LkrZH8uVgdFxf3CDcPKG3S024pXxcXF/dubrvkrLG6fr/iMfuHcHFxF7j5AnnjJL+eVRRocHFxj3DbJVv07JMoGcLFxb2NO2uWzFogK7/CxcU9yV0pYuYb2Hb4wcXFPchdabLOAl+OG6JxcXG3cvPyaHKFa+VYFTVdcHFxb+C2Lc+kuLl+q2rYZMXFxd3ETVKWfEvtBmbpFC4u7knuCiVJd9qQ9yaQ4eLiHuG2jZM8trTfvjlQ4eLiHue2rdb26lWb4hQZEC4u7ibuVY68gDK7hDGsxODi4m7lzsqjs55tXnzZ1hPGxcVd4LbBa9dVrfZzXFzc89y2pZFfz1oJeXXBFBcX90PcPAC1DZjixIaLi/vF3HaeDSVUXFzcg9xZ0GlbpO0hChcX91PclcZnvo2kTbu5vouLizvh/gBCVXGw3VscUAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1274985211&web_id=1274985211')
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
