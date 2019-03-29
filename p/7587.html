@@ -29,7 +29,7 @@
 <meta property="og:site_name" content="Vanch&#39;s Blog">
 <meta property="og:description" content="背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。 但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。 现记录实现细节如下。 隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。 与该文作者不同的是，由于">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-29T08:56:22.597Z">
+<meta property="og:updated_time" content="2019-03-29T09:53:38.215Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何优雅的隐藏 Hexo 博客文章">
 <meta name="twitter:description" content="背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。 但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。 现记录实现细节如下。 隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。 与该文作者不同的是，由于">
@@ -174,7 +174,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#隐藏文章"><span class="post-toc-number">2.</span> <span class="post-toc-text">隐藏文章</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#导航页面"><span class="post-toc-number">3.</span> <span class="post-toc-text">导航页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#隐藏文章"><span class="post-toc-number">2.</span> <span class="post-toc-text">隐藏文章</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#导航页面"><span class="post-toc-number">3.</span> <span class="post-toc-text">导航页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#隐藏导航"><span class="post-toc-number">4.</span> <span class="post-toc-text">隐藏导航</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li></ol>
         </nav>
     </aside>
 
@@ -212,6 +212,10 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//themes/indigo/layout/hide.ejs</span></span><br><span class="line"><span class="comment">//标题栏</span></span><br><span class="line">&lt;%- partial(<span class="string">'_partial/header'</span>, &#123;</span><br><span class="line">    title: <span class="string">'里世界'</span>,</span><br><span class="line">    hdClass: <span class="string">'page-header'</span></span><br><span class="line">&#125;) %&gt;</span><br><span class="line"></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"container body-wrap fade"</span>&gt;</span><br><span class="line">    &lt;!--&gt;仿照分类页面的设计，去除了分类头&lt;--&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"waterfall"</span>&gt;</span><br><span class="line">        &lt;!--&gt;获取了之前脚本中设置的隐藏文章表&lt;--&gt;</span><br><span class="line">        &lt;% site.hide_posts.each(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123; %&gt;</span><br><span class="line">            &lt;%- partial(<span class="string">'_partial/archive'</span>, &#123;<span class="attr">post</span>: post, <span class="attr">date_format</span>: config.date_format&#125;) %&gt;</span><br><span class="line">        &lt;% &#125;)%&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;%- partial('_partial/</span>paginator<span class="string">') %&gt;</span></span><br><span class="line"><span class="string">&lt;/div&gt;</span></span><br></pre></td></tr></table></figure>
 <p>接着设置一个新的index页面作为入口。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//source/hide/index.md</span></span><br><span class="line"></span><br><span class="line">layout: hide</span><br><span class="line">title: 里世界</span><br></pre></td></tr></table></figure></p>
 <p>文章设置是这样的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 如何优雅的隐藏 Hexo 博客文章</span><br><span class="line">categories: Hexo</span><br><span class="line">abbrlink: <span class="string">'7587'</span></span><br><span class="line">tags:</span><br><span class="line">hide: <span class="literal">true</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure></p>
+<h1 id="隐藏导航"><a href="#隐藏导航" class="headerlink" title="隐藏导航"></a>隐藏导航</h1><p>Indigo主题默认会在帖子页的底部，展示上一个下一个贴的导航。</p>
+<p>这会暴露我们隐藏的帖子链接，所以必须要去除。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//themes/indigo/_config.yml</span></span><br><span class="line"></span><br><span class="line"># 帖子页面是否展示上一个下一个导航栏</span><br><span class="line">showNav: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//themes/indigo/layout/_partial/post.ejs</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//根据配置选择是否显示导航栏</span></span><br><span class="line">&lt;% <span class="keyword">if</span> (theme.showNav == <span class="literal">true</span>) &#123; %&gt;</span><br><span class="line">    &lt;%- partial(<span class="string">'post/nav'</span>) %&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过这两个改动，就可以很方便的隐藏文章，并且通过访问hide路由进入隐藏文章列表页面，从而优雅的解决需求。</p>
 
         </div>
@@ -221,7 +225,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2019-03-29T08:56:22.597Z" itemprop="dateUpdated">2019-03-29 16:56:22</time>
+    最后更新时间：<time datetime="2019-03-29T09:53:38.215Z" itemprop="dateUpdated">2019-03-29 17:53:38</time>
 </span><br>
 
 
@@ -300,28 +304,6 @@
     </div>
 
     
-<nav class="post-nav flex-row flex-justify-between">
-  
-    <div class="waves-block waves-effect prev">
-      <a href="/p/f714.html" id="post-prev" class="post-nav-link">
-        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
-        <h4 class="title">P2P血泪史</h4>
-      </a>
-    </div>
-  
-
-  
-    <div class="waves-block waves-effect next">
-      <a href="/p/168d.html" id="post-next" class="post-nav-link">
-        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
-        <h4 class="title">Atomic原子操作原理剖析</h4>
-      </a>
-    </div>
-  
-</nav>
-
-
-
     
 
 
