@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>如何优雅的隐藏 Hexo 博客文章 | Vanch&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#00BCD4">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。 但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。 现记录实现细节如下。 隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。 与该文作者不同的是，由于">
+<meta name="keywords" content="iOS,Objective-C,ObjC,Swift,Shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优雅的隐藏 Hexo 博客文章">
+<meta property="og:url" content="https://vanchchen.github.io/p/7587.html">
+<meta property="og:site_name" content="Vanch&#39;s Blog">
+<meta property="og:description" content="背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。 但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。 现记录实现细节如下。 隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。 与该文作者不同的是，由于">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-29T08:56:22.597Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何优雅的隐藏 Hexo 博客文章">
+<meta name="twitter:description" content="背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。 但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。 现记录实现细节如下。 隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。 与该文作者不同的是，由于">
+    
+        <link rel="alternate" type="application/atom+xml" title="Vanch&#39;s Blog" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/images/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Vanch</h5>
+          <a href="mailto:447389831@qq.com" title="447389831@qq.com" class="mail">447389831@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories/iOS/"  >
+                <i class="icon icon-lg icon-apple"></i>
+                iOS
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                所有
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/VanchChen" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://www.cnblogs.com/vanch/" target="_blank" >
+                <i class="icon icon-lg icon-rss"></i>
+                博客园
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">如何优雅的隐藏 Hexo 博客文章</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">如何优雅的隐藏 Hexo 博客文章</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-03-29T06:08:07.000Z" itemprop="datePublished" class="page-time">
+  2019-03-29
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Hexo/">Hexo</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#隐藏文章"><span class="post-toc-number">2.</span> <span class="post-toc-text">隐藏文章</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#导航页面"><span class="post-toc-number">3.</span> <span class="post-toc-text">导航页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">4.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-隐藏分类"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">如何优雅的隐藏 Hexo 博客文章</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-03-29 14:08:07" datetime="2019-03-29T06:08:07.000Z"  itemprop="datePublished">2019-03-29</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Hexo/">Hexo</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。</p>
+<p>但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。</p>
+<p>现记录实现细节如下。</p>
+<h1 id="隐藏文章"><a href="#隐藏文章" class="headerlink" title="隐藏文章"></a>隐藏文章</h1><p>首先要隐藏指定的文章，通过阅读与实践，最终采用了 <a href="https://blessing.studio/hexo-plugin-to-make-posts-sage-unlisted/" target="_blank" rel="noopener">为 Hexo 博客添加隐藏文章 / 限定公开功能</a> 这个方案。</p>
+<p>与该文作者不同的是，由于我是自用，并不需要做成插件的方式，所以直接修改了<code>plugins.js</code> 文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//themes/indigo/scripts/plugins.js</span></span><br><span class="line"><span class="comment">//生成前过滤文章</span></span><br><span class="line">hexo.extend.filter.register(<span class="string">'before_generate'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> all_posts = <span class="keyword">this</span>.locals.get(<span class="string">'posts'</span>);</span><br><span class="line">    <span class="comment">//找到所有hide标记为true的文章</span></span><br><span class="line">    <span class="keyword">const</span> hide_posts = <span class="keyword">this</span>.locals.get(<span class="string">'posts'</span>).find(&#123; <span class="string">'hide'</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">    <span class="comment">//过滤hide文章</span></span><br><span class="line">    <span class="keyword">const</span> normal_posts = <span class="keyword">this</span>.locals.get(<span class="string">'posts'</span>).filter(<span class="function"><span class="params">post</span> =&gt;</span> !post[<span class="string">'hide'</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>._bindLocals();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.locals.set(<span class="string">'all_posts'</span>, all_posts);</span><br><span class="line">    <span class="keyword">this</span>.locals.set(<span class="string">'sage_posts'</span>, sage_posts);</span><br><span class="line">    <span class="comment">//更新生成的文章为过滤后的文章</span></span><br><span class="line">    <span class="comment">//页面调用时获取的数据就是这个</span></span><br><span class="line">    <span class="keyword">this</span>.locals.set(<span class="string">'posts'</span>, normal_posts);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> original_post_generator = hexo.extend.generator.get(<span class="string">'post'</span>);</span><br><span class="line"></span><br><span class="line">hexo.extend.generator.register(<span class="string">'post'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">locals</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//发送时需要把过滤的页面也加入</span></span><br><span class="line">    <span class="keyword">return</span> original_post_generator.bind(<span class="keyword">this</span>)(&#123;</span><br><span class="line">      posts: <span class="keyword">new</span> locals.posts.constructor(</span><br><span class="line">        locals.posts.data.concat(locals.sage_posts.data)</span><br><span class="line">      )</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>接着只要设置页面的属性<code>hide:true</code>，就能够保证网站中找不到任何该页面的蛛丝马迹，但是可以直接访问链接(<a href="https://vanchchen.github.io/p/7587.html)查阅。">https://vanchchen.github.io/p/7587.html)查阅。</a></p>
+<h1 id="导航页面"><a href="#导航页面" class="headerlink" title="导航页面"></a>导航页面</h1><p>文章确实找不到了，虽然能够通过记录下每一个网址链接的方式访问，但是始终不够优雅，能不能像分类一样有一个导航页面呢？</p>
+<p>Hexo页面的渲染需要使用模板，直接使用 <code>page category tag</code> 这些模板无法定制化成需要的数据，所以建立一个新的layout模版。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//themes/indigo/layout/hide.ejs</span></span><br><span class="line"><span class="comment">//标题栏</span></span><br><span class="line">&lt;%- partial(<span class="string">'_partial/header'</span>, &#123;</span><br><span class="line">    title: <span class="string">'里世界'</span>,</span><br><span class="line">    hdClass: <span class="string">'page-header'</span></span><br><span class="line">&#125;) %&gt;</span><br><span class="line"></span><br><span class="line">&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"container body-wrap fade"</span>&gt;</span><br><span class="line">    &lt;!--&gt;仿照分类页面的设计，去除了分类头&lt;--&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"waterfall"</span>&gt;</span><br><span class="line">        &lt;!--&gt;获取了之前脚本中设置的隐藏文章表&lt;--&gt;</span><br><span class="line">        &lt;% site.hide_posts.each(<span class="function"><span class="keyword">function</span>(<span class="params">post</span>)</span>&#123; %&gt;</span><br><span class="line">            &lt;%- partial(<span class="string">'_partial/archive'</span>, &#123;<span class="attr">post</span>: post, <span class="attr">date_format</span>: config.date_format&#125;) %&gt;</span><br><span class="line">        &lt;% &#125;)%&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;%- partial('_partial/</span>paginator<span class="string">') %&gt;</span></span><br><span class="line"><span class="string">&lt;/div&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接着设置一个新的index页面作为入口。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//source/hide/index.md</span></span><br><span class="line"></span><br><span class="line">layout: hide</span><br><span class="line">title: 里世界</span><br></pre></td></tr></table></figure></p>
+<p>文章设置是这样的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 如何优雅的隐藏 Hexo 博客文章</span><br><span class="line">categories: Hexo</span><br><span class="line">abbrlink: <span class="string">'7587'</span></span><br><span class="line">tags:</span><br><span class="line">hide: <span class="literal">true</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过这两个改动，就可以很方便的隐藏文章，并且通过访问hide路由进入隐藏文章列表页面，从而优雅的解决需求。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-03-29T08:56:22.597Z" itemprop="dateUpdated">2019-03-29 16:56:22</time>
+</span><br>
+
+
+        
+        本文版权归<a href="https://vanchchen.github.io/" target="_blank">Vanch</a>所有，欢迎转载，但未经作者同意必须保留此段声明，否则保留追究法律责任的权利。
+        
+    </div>
+    
+    <footer>
+        <a href="https://vanchchen.github.io">
+            <img src="/images/avatar.jpg" alt="Vanch">
+            Vanch
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/7587.html&title=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/7587.html&title=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/7587.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&url=https://vanchchen.github.io/p/7587.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/7587.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/p/168d.html" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Atomic原子操作原理剖析</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "YfjeluQO2LJ7T9AjqGw6P7QM-gzGzoHsz",
+            appKey: "wrdh0ULPmDxPuPyOYdcLAzdU",
+            avatar: "mm",
+            placeholder: "Just go go",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/images/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/images/wechat.jpg" data-alipay="/images/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        Hola！第<span id="busuanzi_value_site_uv"></span>位客人
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        本站居然被看了<span id="busuanzi_value_site_pv"></span>次
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Vanch &copy; 2018 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://vanchchen.github.io/p/7587.html&title=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&pic=https://vanchchen.github.io/images/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://vanchchen.github.io/p/7587.html&title=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&source=嘿嘿嘿～" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://vanchchen.github.io/p/7587.html" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《如何优雅的隐藏 Hexo 博客文章》 — Vanch's Blog&url=https://vanchchen.github.io/p/7587.html&via=https://vanchchen.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://vanchchen.github.io/p/7587.html" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABxUlEQVR42u3aS44CMQwFQO5/aUaaFRLTzLOdBJAqq1b/UtlYsZ3bLR733/F4/Xzn+enr+49PFw9cXNwx9/5y5JP10LkBFxf3PDcJXslXSShM/n95HxcX98O4rzc30WTBJgkXF/cbufn0V8ELFxf3W7hJ8pNPWU2ftuRquLi4A26vYLr2ent9FxcXd1FXojeSWXqz4+LinuHm25fJ0+qb/wQ7XFzczdxqQpKXSHrNmGaWhouLu5RbPXq1u4BSaOXi4uJu41a3I0moSsJTvuzLXA0XF3czt3c8Iil35iEvOhiKi4t7hFtttVYR25MfXFzcbdxkNXkRJA9w1cCHi4v7Xm61spIUUOanLHBxcU9yk0bIPBj1tjjlhgouLu6Ym5cse0nLJPlpVllwcXHH3Lzm0Nu4JO8nM+Li4p7k9n43uR41X3FxcY9wJ43V+VLzoiouLu5J7iSUVBsw1bLsH8vDxcU9wq22N/Ity/ygRq8Ng4uLu4qbBK+8qJpsjKr/xMXFfRe3t0HJv5ocwsDFxf0WbjVU9RqruLi4n8+dLCNJkBZvcXBxccfc6iGt6gGsauH18itcXNwj3F7BdO2xjO31XVxc3PT/PyD+Yun/QyhKAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+lazyScripts.push('//s95.cnzz.com/z_stat.php?id=1274985211&web_id=1274985211')
+
+</script>
+
+<script src="/js/main.min.js?v=1.7.2"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.7.2" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
