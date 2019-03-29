@@ -12,6 +12,7 @@ Disallow: /css/
 Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
+Disallow: /sage/
 
 Sitemap: https://vanchchen.github.io/sitemap.xml
 Sitemap: https://vanchchen.github.io/baidusitemap.xml
