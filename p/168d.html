@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     
 
     
@@ -30,7 +30,7 @@
 <meta property="og:description" content="前言绝大部分 Objective-C 程序员使用属性时，都不太关注一个特殊的修饰前缀，一般都无脑的使用其非默认缺省的状态，他就是 atomic。 123456@interface PropertyClass@property (atomic, strong)    NSObject *atomicObj;  //缺省也是atomic@property (nonatomic, strong) NSO">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545990117_87.jpg">
-<meta property="og:updated_time" content="2018-12-28T09:44:26.694Z">
+<meta property="og:updated_time" content="2019-10-08T06:34:01.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Atomic原子操作原理剖析">
 <meta name="twitter:description" content="前言绝大部分 Objective-C 程序员使用属性时，都不太关注一个特殊的修饰前缀，一般都无脑的使用其非默认缺省的状态，他就是 atomic。 123456@interface PropertyClass@property (atomic, strong)    NSObject *atomicObj;  //缺省也是atomic@property (nonatomic, strong) NSO">
@@ -210,12 +210,12 @@
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="属性的实现"><a href="#属性的实现" class="headerlink" title="属性的实现"></a>属性的实现</h3><p>首先我们研究一下属性包含的内容。通过查阅源码，其结构如下：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> property_t &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;       <span class="comment">//名字</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *attributes; <span class="comment">//特性</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>属性的结构比较简单，包含了固定的名字和元素，可以通过 <code>property_getName</code> 获取属性名，<code>property_getAttributes</code> 获取特性。</p>
-<p>上例中 <code>atomicObj</code> 的特性为 <code>T@&quot;NSObject&quot;,&amp;,V_atomicObj</code>，其中 <code>V</code> 代表了 <code>strong</code>，<code>atomic</code> 特性缺省没有显示，如果是 <code>nonatomic</code> 则显示 <code>N</code>。</p>
+<p>上例中 <code>atomicObj</code> 的特性为 <code>T@&quot;NSObject&quot;,&amp;,V_atomicObj</code>，其中 <code>&amp;</code> 代表了 <code>strong</code>，<code>atomic</code> 特性缺省没有显示，如果是 <code>nonatomic</code> 则显示 <code>N</code>。</p>
 <p>那到底是怎么实现原子操作的呢？ 通过引入<code>runtime</code>，我们能调试一下调用的函数栈。</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545990117_87.jpg" alt="" title="">
+                    <img src="https://vanch-1258064554.cos.ap-shanghai.myqcloud.com/blog/pic_1545990117_87.jpg" alt title>
                 </div>
                 <div class="image-caption"></div>
             </figure>
@@ -255,7 +255,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2018-12-28T09:44:26.694Z" itemprop="dateUpdated">2018-12-28 17:44:26</time>
+    最后更新时间：<time datetime="2019-10-08T06:34:01.453Z" itemprop="dateUpdated">2019-10-08 14:34:01</time>
 </span><br>
 
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     
 
     
@@ -166,14 +166,14 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
-            <article id="post-隐藏分类"
+            <article id="post-Weak原理"
   class="article-card article-type-post" itemprop="blogPost">
 
     <div class="post-meta">
-        <time class="post-time" title="2019-03-29 14:08:07" datetime="2019-03-29T06:08:07.000Z"  itemprop="datePublished">2019-03-29</time>
+        <time class="post-time" title="2019-12-09 16:03:09" datetime="2019-12-09T08:03:09.000Z"  itemprop="datePublished">2019-12-09</time>
 
         
-	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Hexo/">Hexo</a></li></ul>
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/iOS/">iOS</a></li></ul>
 
 
 
@@ -184,7 +184,7 @@
 
   
     <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/p/7587.html">如何优雅的隐藏 Hexo 博客文章</a>
+      <a class="post-title-link" href="/p/3e6b.html">逐步探究ObjC的Weak技术底层</a>
     </h3>
   
 
@@ -194,16 +194,23 @@
     <div class="post-content" id="post-content" itemprop="postContent">
 
     
-        背景随着生活不断发生变故，有着想把自己私密隐私写成文字记录下来的想法，这些文字将会包含我最真实丑陋的一面，绝对不想让除了我之外的人看到。
-但是Hexo以及Indigo主题并不支持隐藏文章的功能，所以花了几小时查阅资料实现了这个功能。
-现记录实现细节如下。
-隐藏文章首先要隐藏指定的文章，通过阅读与实践，最终采用了 为 Hexo 博客添加隐藏文章 / 限定公开功能 这个方案。
-与该文作者不同的是...
+        前言之前的文章有说过 Atomic 原子操作的原理，其作为一个特殊的修饰前缀，影响了存取操作。
+在属性修饰定义中，还有另一类修饰前缀，他们分别是 strong weak assign copy，这些又有什么区别呢？
+平时喜欢探究的同学，可能也见过 unsafe_unretained，这个又是什么呢？
+让我们从属性修饰入手，逐步揭开弱引用的面纱。
+
+原理属性自动生成的实现方法是怎么样的？首先我...
     
 
-        <a href="/p/7587.html" class="post-more waves-effect waves-button">
+        <a href="/p/3e6b.html" class="post-more waves-effect waves-button">
             阅读全文…
         </a>
+    </div>
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理分析/">原理分析</a></li></ul>
+
     </div>
     
 </article>
